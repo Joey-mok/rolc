@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ROLC — 편집 전 클립 리뷰 툴 for macOS</title>
-  <meta name="description" content="편집 들어가기 전에 소스를 빠르게 훑고 정리하는 macOS 앱. 촬영 현장과 포스트 프로덕션 모두를 위한 클립 리뷰 도구." />
+  <title>ROLC — Rate On Load Clips for macOS</title>
+  <meta name="description" content="Rate your clips before you edit. A macOS tool for DIT and video professionals to review, rate, and organize footage at blazing speed." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -32,11 +32,10 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Noto Sans KR', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 16px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      word-break: keep-all;
     }
 
     /* ── NAV ── */
@@ -90,13 +89,13 @@
     }
     .hero-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; display: inline-block; }
     .hero h1 {
-      font-size: clamp(38px, 5.5vw, 66px); font-weight: 900;
-      line-height: 1.1; letter-spacing: -0.02em;
+      font-size: clamp(42px, 6vw, 72px); font-weight: 900;
+      line-height: 1.05; letter-spacing: -0.03em;
       margin-bottom: 24px;
     }
     .hero h1 em { font-style: normal; color: var(--accent); }
     .hero p {
-      font-size: 19px; color: var(--muted); line-height: 1.75;
+      font-size: 20px; color: var(--muted); line-height: 1.65;
       max-width: 600px; margin: 0 auto 40px;
     }
     .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
@@ -144,17 +143,17 @@
     /* ── SECTION COMMON ── */
     section { padding: 96px 48px; }
     .section-label {
-      font-size: 12px; font-weight: 700; letter-spacing: 0.10em;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--accent);
       margin-bottom: 12px;
     }
     .section-title {
-      font-size: clamp(26px, 3.8vw, 42px); font-weight: 800;
-      letter-spacing: -0.02em; line-height: 1.2;
+      font-size: clamp(28px, 4vw, 44px); font-weight: 800;
+      letter-spacing: -0.02em; line-height: 1.15;
       margin-bottom: 16px;
     }
     .section-sub {
-      font-size: 17px; color: var(--muted); max-width: 540px; line-height: 1.75;
+      font-size: 18px; color: var(--muted); max-width: 540px; line-height: 1.65;
     }
 
     /* ── FEATURES ── */
@@ -179,8 +178,8 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 24px; margin-bottom: 16px;
     }
-    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-    .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .feature-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
 
     /* ── RATING DEMO ── */
     .rating-section { max-width: 1100px; margin: 0 auto; }
@@ -219,8 +218,8 @@
       font-size: 22px; font-weight: 800; color: var(--accent);
       margin: 0 auto 20px;
     }
-    .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-    .step p  { font-size: 14px; color: var(--muted); line-height: 1.75; }
+    .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .step p  { font-size: 14px; color: var(--muted); line-height: 1.65; }
     .step-divider {
       position: absolute; top: 58px; right: -16px;
       color: var(--border); font-size: 24px;
@@ -295,8 +294,8 @@
       .nav-links { display: none; }
       section { padding: 72px 24px; }
       .hero { padding: 120px 24px 60px; }
-      .hero h1 { font-size: 34px; }
-      .hero p { font-size: 16px; }
+      .hero h1 { font-size: 38px; }
+      .hero p { font-size: 17px; }
       .rating-layout { grid-template-columns: 1fr; }
       .steps { grid-template-columns: 1fr; }
       .step-divider { display: none; }
@@ -329,29 +328,29 @@
     ROLC
   </a>
   <ul class="nav-links">
-    <li><a href="#features">기능</a></li>
-    <li><a href="#how">사용 방법</a></li>
-    <li><a href="#requirements">시스템 요구사양</a></li>
-    <li><a href="#updates">업데이트</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#updates">Updates</a></li>
   </ul>
   <div class="nav-lang">
-    <a href="index-demo.html">EN</a>
-    <a href="index-ko-demo.html" class="active">KO</a>
+    <a href="index-demo.html" class="active">EN</a>
+    <a href="index-ko-demo.html">KO</a>
   </div>
 </nav>
 
 <!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-badge">
-    <span></span> 영상 편집자·DIT를 위한 macOS 앱
+    <span></span> macOS App for Video Professionals
   </div>
-  <h1>편집 들어가기 전에,<br /><em>소스부터</em> 정리하세요.</h1>
-  <p>ROLC는 촬영 완료된 소스를 빠르게 훑고, OK·Keep·Reject로 분류해 선택본을 즉시 뽑아내는 클립 리뷰 도구입니다. 편집 전 사전 작업 시간을 절반으로 줄여드립니다.</p>
+  <h1>Rate your clips<br /><em>before</em> you edit.</h1>
+  <p>ROLC lets you scan, rate, and organize footage at blazing speed — so you spend less time scrubbing and more time creating.</p>
   <div class="hero-actions">
-    <a href="#features" class="btn-primary">기능 살펴보기 →</a>
-    <a href="#how" class="btn-secondary">사용 방법 보기</a>
+    <a href="#features" class="btn-primary">Explore Features →</a>
+    <a href="#how" class="btn-secondary">How It Works</a>
   </div>
-  <p class="hero-meta">macOS · 완전 오프라인 · 유니버설 바이너리</p>
+  <p class="hero-meta">macOS · Fully Offline · Universal Binary</p>
 </section>
 
 <!-- ── HERO SCREENSHOT ── -->
@@ -362,7 +361,7 @@
       <div class="mac-btn min"></div>
       <div class="mac-btn max"></div>
     </div>
-    <img src="screenshot-main.png" alt="ROLC 메인 화면 — 썸네일 그리드 뷰" />
+    <img src="screenshot-main.png" alt="ROLC main interface — thumbnail grid view" />
   </div>
 </div>
 
@@ -371,39 +370,39 @@
   <div class="features-inner">
     <div class="features-header">
       <p class="section-label">Features</p>
-      <h2 class="section-title">필요한 기능만.<br />군더더기 없이.</h2>
-      <p class="section-sub">현장에서도, 편집실에서도 빠르게 움직여야 하는 영상 전문가를 위해 설계됐습니다.</p>
+      <h2 class="section-title">Everything you need.<br />Nothing you don't.</h2>
+      <p class="section-sub">Built for DIT and video professionals who need to move fast on set and in post.</p>
     </div>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">🎞</div>
-        <h3>썸네일 그리드 — 한눈에 전체 소스</h3>
-        <p>촬영 폴더를 열면 모든 클립이 썸네일로 즉시 표시됩니다. 플레이어를 열지 않고도 수백 개의 클립을 훑어볼 수 있습니다.</p>
+        <h3>Instant Thumbnail Grid</h3>
+        <p>Load an entire shoot folder and see every clip as a thumbnail instantly. Scrub through hundreds of clips at a glance without opening a player.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">⌨️</div>
-        <h3>키보드 한 번으로 등급 분류</h3>
-        <p>O·K·X 키 하나로 클립을 즉시 등급 분류합니다. 리듬을 끊지 않고 빠르게 전체 소스를 검토할 수 있습니다.</p>
+        <h3>Keyboard-First Rating</h3>
+        <p>Rate clips as OK, Keep, or Reject with single keystrokes. Built for speed — no mouse required when you're in a flow.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🔍</div>
-        <h3>등급·카메라별 필터</h3>
-        <p>OK 클립만 즉시 골라내거나 특정 카메라 소스만 집중해서 볼 수 있습니다. 다중 폴더 사이드바로 멀티캠 현장도 문제없습니다.</p>
+        <h3>Filter by Rating &amp; Camera</h3>
+        <p>Instantly isolate only the OK clips, or focus on a specific camera. Multi-folder projects with sidebar navigation.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📄</div>
-        <h3>PDF 샷 리스트 내보내기</h3>
-        <p>선택한 클립 목록을 PDF 샷 리스트로 즉시 출력합니다. 편집감독·감독·클라이언트에게 바로 공유 가능합니다.</p>
+        <h3>Export PDF Shot List</h3>
+        <p>Generate a shareable PDF shot list from your rated clips. Hand it off to editors, directors, or clients in seconds.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📦</div>
-        <h3>프로젝트 저장 및 불러오기</h3>
-        <p>분류 작업을 파일로 저장하고 언제든 다시 불러옵니다. 데이터베이스도, 클라우드도 필요 없습니다. 파일 하나로 관리합니다.</p>
+        <h3>Save &amp; Load Projects</h3>
+        <p>Save your ratings as a project file and reload them anytime. No database, no cloud — just a file you control.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🔒</div>
-        <h3>완전 오프라인 작동</h3>
-        <p>인터넷 없는 현장에서도 완벽하게 작동합니다. 계정 생성, 클라우드 연결, 인터넷 연결이 일절 필요 없습니다.</p>
+        <h3>Offline · No Subscription</h3>
+        <p>Works in the field with no internet. No account, no cloud, no recurring fees. Your data stays on your machine.</p>
       </div>
     </div>
   </div>
@@ -415,28 +414,28 @@
     <div class="rating-layout">
       <div>
         <p class="section-label">Rating System</p>
-        <h2 class="section-title">세 가지 등급.<br />명확한 선택본.</h2>
-        <p class="section-sub">실제 편집 워크플로우에서 자연스럽게 쓰이는 분류 체계입니다.</p>
+        <h2 class="section-title">Three ratings.<br />Infinite clarity.</h2>
+        <p class="section-sub">A simple system that maps to how you actually think about footage.</p>
         <div class="rating-badges">
           <div class="rating-badge">
             <div class="rating-key ok">O</div>
             <div class="rating-badge-text">
-              <h4>OK — 우선 사용컷</h4>
-              <p>반드시 쓸 베스트 테이크. 감독·편집감독에게 먼저 보여줄 클립입니다.</p>
+              <h4>OK — Best takes</h4>
+              <p>The clips you'll definitely use. Show them to the director first.</p>
             </div>
           </div>
           <div class="rating-badge">
             <div class="rating-key keep">K</div>
             <div class="rating-badge-text">
-              <h4>Keep — 대안컷</h4>
-              <p>OK가 안 될 경우 대안으로 쓸 수 있는 컷. 충분히 쓸 만하지만 최선은 아닌 테이크.</p>
+              <h4>Keep — Backup takes</h4>
+              <p>Good enough to cut with. Not your hero, but not trash.</p>
             </div>
           </div>
           <div class="rating-badge">
             <div class="rating-key reject">X</div>
             <div class="rating-badge-text">
-              <h4>Reject — 불용컷</h4>
-              <p>핀트 아웃, 노출 실패, 음향 불량 등 쓸 수 없는 컷. 표시 후 시야에서 제거합니다.</p>
+              <h4>Reject — Skip</h4>
+              <p>Misfires, blurry, bad audio. Marked and out of your way.</p>
             </div>
           </div>
         </div>
@@ -448,7 +447,7 @@
             <div class="mac-btn min"></div>
             <div class="mac-btn max"></div>
           </div>
-          <img src="screenshot-filter.png" alt="ROLC 필터 뷰 — 등급 분류된 클립" />
+          <img src="screenshot-filter.png" alt="ROLC filter view — rated clips" />
         </div>
       </div>
     </div>
@@ -460,26 +459,26 @@
   <div class="how-inner">
     <div class="how-header">
       <p class="section-label">How It Works</p>
-      <h2 class="section-title">메모리 카드 옮긴 후<br />선택본 완성까지 단 3단계.</h2>
-      <p class="section-sub">설치하고 바로 씁니다. 계정 생성도, 설정도 필요 없습니다.</p>
+      <h2 class="section-title">From card dump to<br />rated selects in minutes.</h2>
+      <p class="section-sub">Three steps. No setup, no account, no nonsense.</p>
     </div>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
-        <h3>폴더 열기</h3>
-        <p>촬영 소스 폴더를 ROLC에 지정합니다. 캐시된 미리보기를 활용해 대용량 소스도 썸네일을 즉시 불러옵니다.</p>
+        <h3>Open Your Folder</h3>
+        <p>Point ROLC at your footage folder. Thumbnails load automatically from cached previews — even for huge shoots.</p>
         <div class="step-divider">→</div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <h3>키보드로 등급 분류</h3>
-        <p>O·K·X 키로 등급을 매기고, 방향키로 클립을 이동합니다. 분류 결과는 자동으로 저장됩니다.</p>
+        <h3>Rate with Keyboard</h3>
+        <p>Press O, K, or X to rate each clip. Navigate with arrow keys. Your ratings save automatically as you go.</p>
         <div class="step-divider">→</div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>필터·내보내기·공유</h3>
-        <p>OK컷만 골라내 PDF 샷 리스트로 내보내 편집감독이나 감독에게 바로 전달합니다.</p>
+        <h3>Filter, Export, Hand Off</h3>
+        <p>Filter to your OK selects, export a PDF shot list, and share with your editor or director. Done.</p>
       </div>
     </div>
   </div>
@@ -490,36 +489,36 @@
   <div class="req-inner">
     <div>
       <p class="section-label">System Requirements</p>
-      <h2 class="section-title">최신 macOS 환경에<br />최적화됐습니다.</h2>
-      <p class="section-sub" style="margin-top:16px;">유니버설 바이너리로 Apple Silicon과 Intel Mac 모두에서 네이티브 성능으로 실행됩니다. Rosetta 불필요.</p>
+      <h2 class="section-title">Built for modern<br />macOS hardware.</h2>
+      <p class="section-sub" style="margin-top:16px;">Universal Binary — native performance on Apple Silicon and Intel Macs. No Rosetta needed.</p>
     </div>
     <div>
       <div class="req-table">
         <div class="req-row">
-          <span class="req-label">운영체제</span>
-          <span class="req-value">macOS 12 Monterey 이상</span>
+          <span class="req-label">Operating System</span>
+          <span class="req-value">macOS 12 Monterey or later</span>
         </div>
         <div class="req-row">
-          <span class="req-label">프로세서</span>
+          <span class="req-label">Processor</span>
           <span class="req-value">
-            Apple Silicon <span class="chip green">네이티브</span>
-            Intel <span class="chip green">네이티브</span>
+            Apple Silicon <span class="chip green">Native</span>
+            Intel <span class="chip green">Native</span>
           </span>
         </div>
         <div class="req-row">
-          <span class="req-label">메모리</span>
-          <span class="req-value">8GB RAM 권장</span>
+          <span class="req-label">Memory</span>
+          <span class="req-value">8 GB RAM recommended</span>
         </div>
         <div class="req-row">
-          <span class="req-label">저장 공간</span>
-          <span class="req-value">300MB 이상</span>
+          <span class="req-label">Storage</span>
+          <span class="req-value">300 MB available space</span>
         </div>
         <div class="req-row">
-          <span class="req-label">인터넷 연결</span>
-          <span class="req-value">불필요 <span class="chip">완전 오프라인</span></span>
+          <span class="req-label">Internet</span>
+          <span class="req-value">Not required <span class="chip">Fully Offline</span></span>
         </div>
         <div class="req-row">
-          <span class="req-label">지원 포맷</span>
+          <span class="req-label">Supported Formats</span>
           <span class="req-value">.mov · .mp4 · .m4v · .mxf</span>
         </div>
       </div>
@@ -532,25 +531,25 @@
   <div class="updates-inner">
     <div class="updates-header">
       <p class="section-label">Release Notes</p>
-      <h2 class="section-title">업데이트 내역</h2>
+      <h2 class="section-title">What's new</h2>
     </div>
 
     <div class="update-item latest">
       <div class="update-ver">
-        <strong>버전 1.0</strong>
-        <span class="update-tag">최신</span>
-        <span class="update-date">2026년 6월</span>
+        <strong>Version 1.0</strong>
+        <span class="update-tag">LATEST</span>
+        <span class="update-date">June 2026</span>
       </div>
       <ul class="update-notes">
-        <li>최초 공개 출시</li>
-        <li>썸네일 그리드 뷰 — 즉시 로딩</li>
-        <li>OK / Keep / Reject 키보드 단축키 등급 분류</li>
-        <li>다중 폴더 사이드바 (드래그앤드롭 순서 변경)</li>
-        <li>등급·카메라별 필터</li>
-        <li>PDF 샷 리스트 내보내기</li>
-        <li>프로젝트 파일 저장 및 불러오기</li>
-        <li>오프라인 RSA 라이선스 인증</li>
-        <li>유니버설 바이너리 (Apple Silicon + Intel)</li>
+        <li>Initial public release</li>
+        <li>Thumbnail grid view with instant loading</li>
+        <li>OK / Keep / Reject rating system with keyboard shortcuts</li>
+        <li>Multi-folder sidebar with drag-and-drop reordering</li>
+        <li>Filter by rating and camera</li>
+        <li>Export to PDF shot list</li>
+        <li>Save &amp; load project files</li>
+        <li>Offline RSA license activation</li>
+        <li>Universal Binary (Apple Silicon + Intel)</li>
       </ul>
     </div>
   </div>
@@ -576,13 +575,13 @@
       </svg>
       ROLC
     </div>
-    <div class="footer-sub">Rate On Load Clips · 영상 편집자·DIT를 위한 macOS 앱</div>
+    <div class="footer-sub">Rate On Load Clips · macOS App for Video Professionals</div>
   </div>
   <div class="footer-links">
-    <a href="#features">기능</a>
-    <a href="#requirements">시스템 요구사양</a>
-    <a href="#updates">업데이트</a>
-    <a href="mailto:contact@rolc.app">문의</a>
+    <a href="#features">Features</a>
+    <a href="#requirements">Requirements</a>
+    <a href="#updates">Updates</a>
+    <a href="mailto:contact@rolc.app">Contact</a>
   </div>
 </footer>
 
