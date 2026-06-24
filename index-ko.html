@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ROLC — 편집 전 클립 리뷰 툴 for macOS</title>
+  <meta name="description" content="편집 들어가기 전에 소스를 빠르게 훑고 정리하는 macOS 앱. 촬영 현장과 포스트 프로덕션 모두를 위한 클립 리뷰 도구." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0e11;
+      --bg2:       #13151a;
+      --bg3:       #1a1d24;
+      --border:    #2a2d36;
+      --text:      #e8eaf0;
+      --muted:     #7c8494;
+      --accent:    #4f6ef7;
+      --accent2:   #3a56d4;
+      --green:     #2ecc71;
+      --ok:        #4f6ef7;
+      --keep:      #f5a623;
+      --reject:    #e74c3c;
+      --radius:    12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      word-break: keep-all;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      height: 60px;
+      background: rgba(13,14,17,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 18px; font-weight: 800; letter-spacing: 0.08em;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #fff;
+      padding: 8px 20px; border-radius: 8px;
+      text-decoration: none; font-size: 14px; font-weight: 600;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent2); }
+    .nav-lang {
+      display: flex; align-items: center; gap: 8px; margin-right: 16px;
+    }
+    .nav-lang a {
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      text-decoration: none; padding: 3px 8px; border-radius: 4px;
+      border: 1px solid transparent; transition: all 0.2s;
+    }
+    .nav-lang a:hover { color: var(--text); }
+    .nav-lang a.active {
+      color: var(--text); border-color: var(--border);
+      background: var(--bg3);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 140px 48px 80px;
+      text-align: center;
+      max-width: 880px; margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(79,110,247,0.12); border: 1px solid rgba(79,110,247,0.3);
+      color: #8fa6fb; border-radius: 100px;
+      padding: 4px 14px; font-size: 13px; font-weight: 500;
+      margin-bottom: 28px;
+    }
+    .hero-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; display: inline-block; }
+    .hero h1 {
+      font-size: clamp(38px, 5.5vw, 66px); font-weight: 900;
+      line-height: 1.1; letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      font-size: 19px; color: var(--muted); line-height: 1.75;
+      max-width: 600px; margin: 0 auto 40px;
+    }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      padding: 14px 32px; border-radius: 10px;
+      text-decoration: none; font-size: 16px; font-weight: 700;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--bg3); color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px 32px; border-radius: 10px;
+      text-decoration: none; font-size: 16px; font-weight: 600;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--muted); transform: translateY(-1px); }
+    .hero-meta {
+      margin-top: 20px; font-size: 13px; color: var(--muted);
+    }
+
+    /* ── SCREENSHOT ── */
+    .screenshot-wrap {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px 80px;
+    }
+    .mac-window {
+      background: var(--bg3); border-radius: 14px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .mac-titlebar {
+      background: #1e2028; height: 38px;
+      display: flex; align-items: center; padding: 0 16px; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mac-btn { width: 12px; height: 12px; border-radius: 50%; }
+    .mac-btn.close  { background: #ff5f57; }
+    .mac-btn.min    { background: #febc2e; }
+    .mac-btn.max    { background: #28c840; }
+    .mac-window img { width: 100%; display: block; }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 96px 48px; }
+    .section-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.10em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(26px, 3.8vw, 42px); font-weight: 800;
+      letter-spacing: -0.02em; line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px; color: var(--muted); max-width: 540px; line-height: 1.75;
+    }
+
+    /* ── FEATURES ── */
+    .features { background: var(--bg2); }
+    .features-inner { max-width: 1100px; margin: 0 auto; }
+    .features-header { text-align: center; margin-bottom: 64px; }
+    .features-header .section-sub { margin: 0 auto; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(79,110,247,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 16px;
+    }
+    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* ── RATING DEMO ── */
+    .rating-section { max-width: 1100px; margin: 0 auto; }
+    .rating-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .rating-badges { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+    .rating-badge {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px 20px;
+    }
+    .rating-key {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; flex-shrink: 0;
+    }
+    .rating-key.ok     { background: rgba(79,110,247,0.2); color: var(--ok); border: 1px solid rgba(79,110,247,0.4); }
+    .rating-key.keep   { background: rgba(245,166,35,0.15); color: var(--keep); border: 1px solid rgba(245,166,35,0.3); }
+    .rating-key.reject { background: rgba(231,76,60,0.15); color: var(--reject); border: 1px solid rgba(231,76,60,0.3); }
+    .rating-badge-text h4 { font-size: 15px; font-weight: 700; }
+    .rating-badge-text p  { font-size: 13px; color: var(--muted); }
+    .rating-screenshot { position: relative; }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: var(--bg2); }
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+    .how-header { text-align: center; margin-bottom: 64px; }
+    .how-header .section-sub { margin: 0 auto; }
+    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; }
+    .step { position: relative; text-align: center; padding: 32px 24px; }
+    .step-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; color: var(--accent);
+      margin: 0 auto 20px;
+    }
+    .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .step p  { font-size: 14px; color: var(--muted); line-height: 1.75; }
+    .step-divider {
+      position: absolute; top: 58px; right: -16px;
+      color: var(--border); font-size: 24px;
+    }
+
+    /* ── REQUIREMENTS ── */
+    .requirements { background: var(--bg2); }
+    .req-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .req-table { border-top: 1px solid var(--border); }
+    .req-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .req-label { color: var(--muted); }
+    .req-value { font-weight: 600; text-align: right; }
+    .chip {
+      display: inline-block; background: rgba(79,110,247,0.12);
+      color: #8fa6fb; border-radius: 6px;
+      padding: 2px 8px; font-size: 12px; font-weight: 600;
+      margin-left: 6px;
+    }
+    .chip.green { background: rgba(46,204,113,0.12); color: #5ddb94; }
+
+    /* ── PRICING ── */
+    .pricing-inner { max-width: 880px; margin: 0 auto; text-align: center; }
+    .pricing-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 20px; padding: 56px 48px; margin-top: 48px;
+      position: relative; overflow: hidden;
+    }
+    .pricing-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; background: linear-gradient(90deg, var(--accent), #7b9cff);
+    }
+    .pricing-badge {
+      display: inline-block; background: rgba(46,204,113,0.12);
+      border: 1px solid rgba(46,204,113,0.3); color: #5ddb94;
+      border-radius: 100px; padding: 4px 14px; font-size: 13px; font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .pricing-price {
+      font-size: 72px; font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .pricing-price sup { font-size: 32px; vertical-align: top; margin-top: 12px; }
+    .pricing-sub { color: var(--muted); font-size: 15px; margin: 8px 0 32px; }
+    .pricing-features { list-style: none; text-align: left; margin-bottom: 40px; max-width: 360px; margin-left: auto; margin-right: auto; }
+    .pricing-features li {
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      font-size: 15px; display: flex; align-items: center; gap: 10px;
+    }
+    .pricing-features li:last-child { border: none; }
+    .pricing-features li::before { content: '✓'; color: var(--green); font-weight: 700; }
+    .trial-note { font-size: 13px; color: var(--muted); margin-top: 16px; }
+
+    /* ── UPDATES ── */
+    .updates { background: var(--bg2); }
+    .updates-inner { max-width: 800px; margin: 0 auto; }
+    .updates-header { margin-bottom: 40px; }
+    .update-item {
+      border-left: 2px solid var(--border); padding-left: 24px; margin-bottom: 40px;
+      position: relative;
+    }
+    .update-item::before {
+      content: ''; position: absolute; left: -5px; top: 6px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .update-item.latest::before { background: var(--green); }
+    .update-ver {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
+    }
+    .update-ver strong { font-size: 16px; font-weight: 700; }
+    .update-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      padding: 2px 8px; border-radius: 4px;
+      background: rgba(46,204,113,0.15); color: var(--green);
+    }
+    .update-date { font-size: 12px; color: var(--muted); }
+    .update-notes { list-style: none; }
+    .update-notes li {
+      font-size: 14px; color: var(--muted); padding: 3px 0;
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .update-notes li::before { content: '·'; color: var(--accent); font-size: 18px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 24px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 800; letter-spacing: 0.08em; }
+    .footer-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      section { padding: 72px 24px; }
+      .hero { padding: 120px 24px 60px; }
+      .hero h1 { font-size: 34px; }
+      .hero p { font-size: 16px; }
+      .rating-layout { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .step-divider { display: none; }
+      .req-inner { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">ROLC</a>
+  <ul class="nav-links">
+    <li><a href="#features">기능</a></li>
+    <li><a href="#how">사용 방법</a></li>
+    <li><a href="#requirements">시스템 요구사양</a></li>
+    <li><a href="#updates">업데이트</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="nav-lang">
+      <a href="index.html">EN</a>
+      <a href="index-ko.html" class="active">KO</a>
+    </div>
+    <a href="#pricing" class="nav-cta">구매 — ₩50,000</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-badge">
+    <span></span> 영상 편집자·DIT를 위한 macOS 앱
+  </div>
+  <h1>편집 들어가기 전에,<br /><em>소스부터</em> 정리하세요.</h1>
+  <p>ROLC는 촬영 완료된 소스를 빠르게 훑고, OK·Keep·Reject로 분류해 선택본을 즉시 뽑아내는 클립 리뷰 도구입니다. 편집 전 사전 작업 시간을 절반으로 줄여드립니다.</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn-primary">
+      ↓ 7일 무료 체험
+    </a>
+    <a href="#features" class="btn-secondary">기능 살펴보기</a>
+  </div>
+  <p class="hero-meta">₩50,000 (약 $49) 평생 라이선스 · 구독 없음 · 인터넷 불필요</p>
+</section>
+
+<!-- ── HERO SCREENSHOT ── -->
+<div class="screenshot-wrap">
+  <div class="mac-window">
+    <div class="mac-titlebar">
+      <div class="mac-btn close"></div>
+      <div class="mac-btn min"></div>
+      <div class="mac-btn max"></div>
+    </div>
+    <img src="screenshot-main.png" alt="ROLC 메인 화면 — 썸네일 그리드 뷰" />
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="features-header">
+      <p class="section-label">Features</p>
+      <h2 class="section-title">필요한 기능만.<br />군더더기 없이.</h2>
+      <p class="section-sub">현장에서도, 편집실에서도 빠르게 움직여야 하는 영상 전문가를 위해 설계됐습니다.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎞</div>
+        <h3>썸네일 그리드 — 한눈에 전체 소스</h3>
+        <p>촬영 폴더를 열면 모든 클립이 썸네일로 즉시 표시됩니다. 플레이어를 열지 않고도 수백 개의 클립을 훑어볼 수 있습니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⌨️</div>
+        <h3>키보드 한 번으로 등급 분류</h3>
+        <p>O·K·X 키 하나로 클립을 즉시 등급 분류합니다. 리듬을 끊지 않고 빠르게 전체 소스를 검토할 수 있습니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>등급·카메라별 필터</h3>
+        <p>OK 클립만 즉시 골라내거나 특정 카메라 소스만 집중해서 볼 수 있습니다. 다중 폴더 사이드바로 멀티캠 현장도 문제없습니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>PDF 샷 리스트 내보내기</h3>
+        <p>선택한 클립 목록을 PDF 샷 리스트로 즉시 출력합니다. 편집감독·감독·클라이언트에게 바로 공유 가능합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>프로젝트 저장 및 불러오기</h3>
+        <p>분류 작업을 파일로 저장하고 언제든 다시 불러옵니다. 데이터베이스도, 클라우드도 필요 없습니다. 파일 하나로 관리합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>오프라인 라이선스 · 구독 없음</h3>
+        <p>1회 구매로 평생 사용합니다. 라이선스 인증이 완전 오프라인으로 작동해 인터넷 없는 현장에서도 문제없습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RATING SYSTEM ── -->
+<section>
+  <div class="rating-section">
+    <div class="rating-layout">
+      <div>
+        <p class="section-label">Rating System</p>
+        <h2 class="section-title">세 가지 등급.<br />명확한 선택본.</h2>
+        <p class="section-sub">실제 편집 워크플로우에서 자연스럽게 쓰이는 분류 체계입니다.</p>
+        <div class="rating-badges">
+          <div class="rating-badge">
+            <div class="rating-key ok">O</div>
+            <div class="rating-badge-text">
+              <h4>OK — 우선 사용컷</h4>
+              <p>반드시 쓸 베스트 테이크. 감독·편집감독에게 먼저 보여줄 클립입니다.</p>
+            </div>
+          </div>
+          <div class="rating-badge">
+            <div class="rating-key keep">K</div>
+            <div class="rating-badge-text">
+              <h4>Keep — 대안컷</h4>
+              <p>OK가 안 될 경우 대안으로 쓸 수 있는 컷. 충분히 쓸 만하지만 최선은 아닌 테이크.</p>
+            </div>
+          </div>
+          <div class="rating-badge">
+            <div class="rating-key reject">X</div>
+            <div class="rating-badge-text">
+              <h4>Reject — 불용컷</h4>
+              <p>핀트 아웃, 노출 실패, 음향 불량 등 쓸 수 없는 컷. 표시 후 시야에서 제거합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rating-screenshot">
+        <div class="mac-window">
+          <div class="mac-titlebar">
+            <div class="mac-btn close"></div>
+            <div class="mac-btn min"></div>
+            <div class="mac-btn max"></div>
+          </div>
+          <img src="screenshot-filter.png" alt="ROLC 필터 뷰 — 등급 분류된 클립" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="how-header">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">메모리 카드 옮긴 후<br />선택본 완성까지 단 3단계.</h2>
+      <p class="section-sub">설치하고 바로 씁니다. 계정 생성도, 설정도 필요 없습니다.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>폴더 열기</h3>
+        <p>촬영 소스 폴더를 ROLC에 지정합니다. 캐시된 미리보기를 활용해 대용량 소스도 썸네일을 즉시 불러옵니다.</p>
+        <div class="step-divider">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>키보드로 등급 분류</h3>
+        <p>O·K·X 키로 등급을 매기고, 방향키로 클립을 이동합니다. 분류 결과는 자동으로 저장됩니다.</p>
+        <div class="step-divider">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>필터·내보내기·공유</h3>
+        <p>OK컷만 골라내 PDF 샷 리스트로 내보내 편집감독이나 감독에게 바로 전달합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REQUIREMENTS ── -->
+<section class="requirements" id="requirements">
+  <div class="req-inner">
+    <div>
+      <p class="section-label">System Requirements</p>
+      <h2 class="section-title">최신 macOS 환경에<br />최적화됐습니다.</h2>
+      <p class="section-sub" style="margin-top:16px;">유니버설 바이너리로 Apple Silicon과 Intel Mac 모두에서 네이티브 성능으로 실행됩니다. Rosetta 불필요.</p>
+    </div>
+    <div>
+      <div class="req-table">
+        <div class="req-row">
+          <span class="req-label">운영체제</span>
+          <span class="req-value">macOS 12 Monterey 이상</span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">프로세서</span>
+          <span class="req-value">
+            Apple Silicon <span class="chip green">네이티브</span>
+            Intel <span class="chip green">네이티브</span>
+          </span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">메모리</span>
+          <span class="req-value">8GB RAM 권장</span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">저장 공간</span>
+          <span class="req-value">300MB 이상</span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">인터넷 연결</span>
+          <span class="req-value">불필요 <span class="chip">완전 오프라인</span></span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">지원 포맷</span>
+          <span class="req-value">.mov · .mp4 · .m4v · .mxf</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section id="pricing">
+  <div class="pricing-inner">
+    <p class="section-label" style="text-align:center">Pricing</p>
+    <h2 class="section-title" style="text-align:center">단순하고 솔직한 가격.</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto">한 번 구매하면 영원히 씁니다. 연장도, 좌석 수 제한도, 클라우드 의존도 없습니다.</p>
+    <div class="pricing-card">
+      <div class="pricing-badge">✦ 일회성 구매</div>
+      <div class="pricing-price"><sup>₩</sup>50,000</div>
+      <p class="pricing-sub">평생 라이선스 · 1회 결제</p>
+      <ul class="pricing-features">
+        <li>모든 기능 전체 이용</li>
+        <li>평생 라이선스 — 만료 없음</li>
+        <li>버전 1.x 업데이트 무료 포함</li>
+        <li>Mac 1대 (기기 이전 가능)</li>
+        <li>오프라인 인증 · 계정 불필요</li>
+        <li>이메일 우선 지원</li>
+      </ul>
+      <a href="#" class="btn-primary" style="font-size:18px;padding:16px 48px">
+        지금 구매 — ₩50,000 →
+      </a>
+      <p class="trial-note">🎁 7일 무료 체험 포함 · 신용카드 없이 바로 시작 가능</p>
+      <p class="trial-note" style="margin-top:8px">문의: contact@rolc.app</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── UPDATES ── -->
+<section class="updates" id="updates">
+  <div class="updates-inner">
+    <div class="updates-header">
+      <p class="section-label">Release Notes</p>
+      <h2 class="section-title">업데이트 내역</h2>
+    </div>
+
+    <div class="update-item latest">
+      <div class="update-ver">
+        <strong>버전 1.0</strong>
+        <span class="update-tag">최신</span>
+        <span class="update-date">2026년 6월</span>
+      </div>
+      <ul class="update-notes">
+        <li>최초 공개 출시</li>
+        <li>썸네일 그리드 뷰 — 즉시 로딩</li>
+        <li>OK / Keep / Reject 키보드 단축키 등급 분류</li>
+        <li>다중 폴더 사이드바 (드래그앤드롭 순서 변경)</li>
+        <li>등급·카메라별 필터</li>
+        <li>PDF 샷 리스트 내보내기</li>
+        <li>프로젝트 파일 저장 및 불러오기</li>
+        <li>자동 7일 무료 체험 — 별도 트라이얼 키 불필요</li>
+        <li>오프라인 RSA 라이선스 인증</li>
+        <li>유니버설 바이너리 (Apple Silicon + Intel)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div>
+    <div class="footer-logo">ROLC</div>
+    <div class="footer-sub">Rate On Load Clips · 영상 편집자·DIT를 위한 macOS 앱</div>
+  </div>
+  <div class="footer-links">
+    <a href="#features">기능</a>
+    <a href="#requirements">시스템 요구사양</a>
+    <a href="#pricing">가격</a>
+    <a href="#updates">업데이트</a>
+    <a href="mailto:contact@rolc.app">문의</a>
+  </div>
+</footer>
+
+</body>
+</html>
