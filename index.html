@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ROLC — Rate On Load Clips</title>
+  <meta name="description" content="Rate your clips before you edit. A macOS tool for DIT and video professionals to review, rate, and organize footage at blazing speed." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0e11;
+      --bg2:       #13151a;
+      --bg3:       #1a1d24;
+      --border:    #2a2d36;
+      --text:      #e8eaf0;
+      --muted:     #7c8494;
+      --accent:    #4f6ef7;
+      --accent2:   #3a56d4;
+      --green:     #2ecc71;
+      --ok:        #4f6ef7;
+      --keep:      #f5a623;
+      --reject:    #e74c3c;
+      --radius:    12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      height: 60px;
+      background: rgba(13,14,17,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 18px; font-weight: 800; letter-spacing: 0.08em;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #fff;
+      padding: 8px 20px; border-radius: 8px;
+      text-decoration: none; font-size: 14px; font-weight: 600;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent2); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 140px 48px 80px;
+      text-align: center;
+      max-width: 880px; margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(79,110,247,0.12); border: 1px solid rgba(79,110,247,0.3);
+      color: #8fa6fb; border-radius: 100px;
+      padding: 4px 14px; font-size: 13px; font-weight: 500;
+      margin-bottom: 28px;
+    }
+    .hero-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; display: inline-block; }
+    .hero h1 {
+      font-size: clamp(42px, 6vw, 72px); font-weight: 900;
+      line-height: 1.05; letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      font-size: 20px; color: var(--muted); line-height: 1.65;
+      max-width: 600px; margin: 0 auto 40px;
+    }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      padding: 14px 32px; border-radius: 10px;
+      text-decoration: none; font-size: 16px; font-weight: 700;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--bg3); color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px 32px; border-radius: 10px;
+      text-decoration: none; font-size: 16px; font-weight: 600;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--muted); transform: translateY(-1px); }
+    .hero-meta {
+      margin-top: 20px; font-size: 13px; color: var(--muted);
+    }
+
+    /* ── SCREENSHOT ── */
+    .screenshot-wrap {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px 80px;
+    }
+    .mac-window {
+      background: var(--bg3); border-radius: 14px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .mac-titlebar {
+      background: #1e2028; height: 38px;
+      display: flex; align-items: center; padding: 0 16px; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mac-btn { width: 12px; height: 12px; border-radius: 50%; }
+    .mac-btn.close  { background: #ff5f57; }
+    .mac-btn.min    { background: #febc2e; }
+    .mac-btn.max    { background: #28c840; }
+    .mac-window img { width: 100%; display: block; }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 96px 48px; }
+    .section-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 800;
+      letter-spacing: -0.02em; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 18px; color: var(--muted); max-width: 540px; line-height: 1.65;
+    }
+
+    /* ── FEATURES ── */
+    .features { background: var(--bg2); }
+    .features-inner {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .features-header { text-align: center; margin-bottom: 64px; }
+    .features-header .section-sub { margin: 0 auto; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(79,110,247,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 16px;
+    }
+    .feature-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ── RATING DEMO ── */
+    .rating-section { max-width: 1100px; margin: 0 auto; }
+    .rating-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .rating-badges { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+    .rating-badge {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px 20px;
+    }
+    .rating-key {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; flex-shrink: 0;
+    }
+    .rating-key.ok     { background: rgba(79,110,247,0.2); color: var(--ok); border: 1px solid rgba(79,110,247,0.4); }
+    .rating-key.keep   { background: rgba(245,166,35,0.15); color: var(--keep); border: 1px solid rgba(245,166,35,0.3); }
+    .rating-key.reject { background: rgba(231,76,60,0.15); color: var(--reject); border: 1px solid rgba(231,76,60,0.3); }
+    .rating-badge-text h4 { font-size: 15px; font-weight: 700; }
+    .rating-badge-text p  { font-size: 13px; color: var(--muted); }
+    .rating-screenshot { position: relative; }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: var(--bg2); }
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+    .how-header { text-align: center; margin-bottom: 64px; }
+    .how-header .section-sub { margin: 0 auto; }
+    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; }
+    .step { position: relative; text-align: center; padding: 32px 24px; }
+    .step-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; color: var(--accent);
+      margin: 0 auto 20px;
+    }
+    .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .step p  { font-size: 14px; color: var(--muted); line-height: 1.65; }
+    .step-divider {
+      position: absolute; top: 58px; right: -16px;
+      color: var(--border); font-size: 24px;
+    }
+
+    /* ── SCREENSHOTS ── */
+    .screenshots-inner { max-width: 1100px; margin: 0 auto; }
+    .screenshots-header { text-align: center; margin-bottom: 56px; }
+    .screenshots-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .shot-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .shot-card img { width: 100%; display: block; }
+    .shot-caption { padding: 16px 20px; }
+    .shot-caption h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .shot-caption p  { font-size: 13px; color: var(--muted); }
+
+    /* ── REQUIREMENTS ── */
+    .requirements { background: var(--bg2); }
+    .req-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .req-table { border-top: 1px solid var(--border); }
+    .req-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .req-label { color: var(--muted); }
+    .req-value { font-weight: 600; text-align: right; }
+    .chip {
+      display: inline-block; background: rgba(79,110,247,0.12);
+      color: #8fa6fb; border-radius: 6px;
+      padding: 2px 8px; font-size: 12px; font-weight: 600;
+      margin-left: 6px;
+    }
+    .chip.green { background: rgba(46,204,113,0.12); color: #5ddb94; }
+
+    /* ── PRICING ── */
+    .pricing-inner { max-width: 880px; margin: 0 auto; text-align: center; }
+    .pricing-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 20px; padding: 56px 48px; margin-top: 48px;
+      position: relative; overflow: hidden;
+    }
+    .pricing-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; background: linear-gradient(90deg, var(--accent), #7b9cff);
+    }
+    .pricing-badge {
+      display: inline-block; background: rgba(46,204,113,0.12);
+      border: 1px solid rgba(46,204,113,0.3); color: #5ddb94;
+      border-radius: 100px; padding: 4px 14px; font-size: 13px; font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .pricing-price {
+      font-size: 72px; font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .pricing-price sup { font-size: 32px; vertical-align: top; margin-top: 12px; }
+    .pricing-sub { color: var(--muted); font-size: 15px; margin: 8px 0 32px; }
+    .pricing-features { list-style: none; text-align: left; margin-bottom: 40px; max-width: 360px; margin-left: auto; margin-right: auto; }
+    .pricing-features li {
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      font-size: 15px; display: flex; align-items: center; gap: 10px;
+    }
+    .pricing-features li:last-child { border: none; }
+    .pricing-features li::before { content: '✓'; color: var(--green); font-weight: 700; }
+    .trial-note { font-size: 13px; color: var(--muted); margin-top: 16px; }
+
+    /* ── UPDATES ── */
+    .updates { background: var(--bg2); }
+    .updates-inner { max-width: 800px; margin: 0 auto; }
+    .updates-header { margin-bottom: 40px; }
+    .update-item {
+      border-left: 2px solid var(--border); padding-left: 24px; margin-bottom: 40px;
+      position: relative;
+    }
+    .update-item::before {
+      content: ''; position: absolute; left: -5px; top: 6px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .update-item.latest::before { background: var(--green); }
+    .update-ver {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
+    }
+    .update-ver strong { font-size: 16px; font-weight: 700; }
+    .update-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      padding: 2px 8px; border-radius: 4px;
+      background: rgba(46,204,113,0.15); color: var(--green);
+    }
+    .update-date { font-size: 12px; color: var(--muted); }
+    .update-notes { list-style: none; }
+    .update-notes li {
+      font-size: 14px; color: var(--muted); padding: 3px 0;
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .update-notes li::before { content: '·'; color: var(--accent); font-size: 18px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 24px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 800; letter-spacing: 0.08em; }
+    .footer-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      section { padding: 72px 24px; }
+      .hero { padding: 120px 24px 60px; }
+      .hero h1 { font-size: 38px; }
+      .hero p { font-size: 17px; }
+      .rating-layout { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .step-divider { display: none; }
+      .screenshots-grid { grid-template-columns: 1fr; }
+      .req-inner { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">ROLC</a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#updates">Updates</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">Buy — $49</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-badge">
+    <span></span> macOS App for Video Professionals
+  </div>
+  <h1>Rate your clips<br /><em>before</em> you edit.</h1>
+  <p>ROLC lets you scan, rate, and organize footage at blazing speed — so you spend less time scrubbing and more time creating.</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn-primary">
+      ↓ Try Free for 7 Days
+    </a>
+    <a href="#features" class="btn-secondary">See Features</a>
+  </div>
+  <p class="hero-meta">$49 one-time · No subscription · Lifetime license</p>
+</section>
+
+<!-- ── HERO SCREENSHOT ── -->
+<div class="screenshot-wrap">
+  <div class="mac-window">
+    <div class="mac-titlebar">
+      <div class="mac-btn close"></div>
+      <div class="mac-btn min"></div>
+      <div class="mac-btn max"></div>
+    </div>
+    <img src="screenshot-main.png" alt="ROLC main interface — thumbnail grid view" />
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="features-header">
+      <p class="section-label">Features</p>
+      <h2 class="section-title">Everything you need.<br />Nothing you don't.</h2>
+      <p class="section-sub">Built for DIT and video professionals who need to move fast on set and in post.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎞</div>
+        <h3>Instant Thumbnail Grid</h3>
+        <p>Load an entire shoot folder and see every clip as a thumbnail instantly. Scrub through hundreds of clips at a glance without opening a player.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⌨️</div>
+        <h3>Keyboard-First Rating</h3>
+        <p>Rate clips as OK, Keep, or Reject with single keystrokes. Built for speed — no mouse required when you're in a flow.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Filter by Rating & Camera</h3>
+        <p>Instantly isolate only the OK clips, or focus on a specific camera. Multi-folder projects with sidebar navigation.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>Export PDF Shot List</h3>
+        <p>Generate a shareable PDF shot list from your rated clips. Hand it off to editors, directors, or clients in seconds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>Save &amp; Load Projects</h3>
+        <p>Save your ratings as a project file and reload them anytime. No database, no cloud — just a file you control.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Offline License · No Subscription</h3>
+        <p>One-time purchase, verified fully offline. Works in the field with no internet. Your data stays on your machine.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RATING SYSTEM ── -->
+<section>
+  <div class="rating-section">
+    <div class="rating-layout">
+      <div>
+        <p class="section-label">Rating System</p>
+        <h2 class="section-title">Three ratings.<br />Infinite clarity.</h2>
+        <p class="section-sub">A simple system that maps to how you actually think about footage.</p>
+        <div class="rating-badges">
+          <div class="rating-badge">
+            <div class="rating-key ok">O</div>
+            <div class="rating-badge-text">
+              <h4>OK — Best takes</h4>
+              <p>The clips you'll definitely use. Show them to the director first.</p>
+            </div>
+          </div>
+          <div class="rating-badge">
+            <div class="rating-key keep">K</div>
+            <div class="rating-badge-text">
+              <h4>Keep — Backup takes</h4>
+              <p>Good enough to cut with. Not your hero, but not trash.</p>
+            </div>
+          </div>
+          <div class="rating-badge">
+            <div class="rating-key reject">X</div>
+            <div class="rating-badge-text">
+              <h4>Reject — Skip</h4>
+              <p>Misfires, blurry, bad audio. Marked and out of your way.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rating-screenshot">
+        <div class="mac-window">
+          <div class="mac-titlebar">
+            <div class="mac-btn close"></div>
+            <div class="mac-btn min"></div>
+            <div class="mac-btn max"></div>
+          </div>
+          <img src="screenshot-filter.png" alt="ROLC filter view — rated clips" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="how-header">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">From card dump to<br />rated selects in minutes.</h2>
+      <p class="section-sub">Three steps. No setup, no account, no nonsense.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Open Your Folder</h3>
+        <p>Point ROLC at your footage folder. Thumbnails load automatically from cached previews — even for huge shoots.</p>
+        <div class="step-divider">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Rate with Keyboard</h3>
+        <p>Press O, K, or X to rate each clip. Navigate with arrow keys. Your ratings save automatically as you go.</p>
+        <div class="step-divider">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Filter, Export, Hand Off</h3>
+        <p>Filter to your OK selects, export a PDF shot list, and share with your editor or director. Done.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REQUIREMENTS ── -->
+<section class="requirements" id="requirements">
+  <div class="req-inner">
+    <div>
+      <p class="section-label">System Requirements</p>
+      <h2 class="section-title">Built for modern<br />macOS hardware.</h2>
+      <p class="section-sub" style="margin-top:16px;">Universal Binary — native performance on Apple Silicon and Intel Macs. No Rosetta needed.</p>
+    </div>
+    <div>
+      <div class="req-table">
+        <div class="req-row">
+          <span class="req-label">Operating System</span>
+          <span class="req-value">macOS 12 Monterey or later</span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">Processor</span>
+          <span class="req-value">
+            Apple Silicon <span class="chip green">Native</span>
+            Intel <span class="chip green">Native</span>
+          </span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">Memory</span>
+          <span class="req-value">8 GB RAM recommended</span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">Storage</span>
+          <span class="req-value">300 MB available space</span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">Internet</span>
+          <span class="req-value">Not required <span class="chip">Fully Offline</span></span>
+        </div>
+        <div class="req-row">
+          <span class="req-label">Supported Formats</span>
+          <span class="req-value">.mov · .mp4 · .m4v · .mxf</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section id="pricing">
+  <div class="pricing-inner">
+    <p class="section-label" style="text-align:center">Pricing</p>
+    <h2 class="section-title" style="text-align:center">Simple, honest pricing.</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto">Pay once. Use forever. No renewals, no seat limits, no cloud lock-in.</p>
+    <div class="pricing-card">
+      <div class="pricing-badge">✦ One-Time Purchase</div>
+      <div class="pricing-price"><sup>$</sup>49</div>
+      <p class="pricing-sub">Full Perpetual License · One-time payment</p>
+      <ul class="pricing-features">
+        <li>Full access to all features</li>
+        <li>Lifetime license — no expiry</li>
+        <li>Free updates for version 1.x</li>
+        <li>1 Mac per license (transferable)</li>
+        <li>Offline activation · No account needed</li>
+        <li>Priority email support</li>
+      </ul>
+      <a href="#" class="btn-primary" style="font-size:18px;padding:16px 48px">
+        Buy Now — $49 →
+      </a>
+      <p class="trial-note">🎁 7-day free trial included · No credit card required to try</p>
+      <p class="trial-note" style="margin-top:8px">KRW ₩50,000 · contact@rolc.app for questions</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── UPDATES ── -->
+<section class="updates" id="updates">
+  <div class="updates-inner">
+    <div class="updates-header">
+      <p class="section-label">Release Notes</p>
+      <h2 class="section-title">What's new</h2>
+    </div>
+
+    <div class="update-item latest">
+      <div class="update-ver">
+        <strong>Version 1.0</strong>
+        <span class="update-tag">LATEST</span>
+        <span class="update-date">June 2026</span>
+      </div>
+      <ul class="update-notes">
+        <li>Initial public release</li>
+        <li>Thumbnail grid view with instant loading</li>
+        <li>OK / Keep / Reject rating system with keyboard shortcuts</li>
+        <li>Multi-folder sidebar with drag-and-drop reordering</li>
+        <li>Filter by rating and camera</li>
+        <li>Export to PDF shot list</li>
+        <li>Save &amp; load project files</li>
+        <li>Auto 7-day trial — no trial key required</li>
+        <li>Offline RSA license activation</li>
+        <li>Universal Binary (Apple Silicon + Intel)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div>
+    <div class="footer-logo">ROLC</div>
+    <div class="footer-sub">Rate On Load Clips · macOS App for Video Professionals</div>
+  </div>
+  <div class="footer-links">
+    <a href="#features">Features</a>
+    <a href="#requirements">Requirements</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#updates">Updates</a>
+    <a href="mailto:contact@rolc.app">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
