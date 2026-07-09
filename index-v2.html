@@ -201,7 +201,7 @@
     .story-author { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
     .story-title { font-size: 13px; color: var(--accent); font-weight: 600; letter-spacing: 0.05em; }
     .story-quote {
-      font-size: 18px; font-weight: 700; line-height: 1.5; color: var(--text);
+      font-size: 19px; font-weight: 700; line-height: 1.45; color: var(--text);
       margin-bottom: 24px; position: relative; border-left: 4px solid var(--accent); padding-left: 16px;
     }
     .story-paragraphs p { font-size: 15px; color: var(--muted); margin-bottom: 16px; line-height: 1.8; }
@@ -477,11 +477,11 @@
     ROLC
   </a>
   <ul class="nav-links">
-    <li><a href="#features">Core Features</a></li>
+    <li><a href="#features">Features</a></li>
     <li><a href="#brand-story">Our Story</a></li>
+    <li><a href="#how">Workflow</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#trial-generator">Register License</a></li>
-    <li><a href="#security-guide">macOS Guide</a></li>
     <li><a href="#requirements">Requirements</a></li>
   </ul>
   <div class="nav-lang">
@@ -499,7 +499,7 @@
   <p>ROLC (Roll Change) lets you load massive ProRes / MP4 folders instantly to perform ultra-fast <strong>clip rating</strong>, export pristine <strong>PDF shot reports</strong> with one click, and seamlessly <strong>share rating states</strong> with other Mac stations using lightweight project files (.cvp) over a shared NAS.</p>
   <div class="hero-actions">
     <a href="./dist/ROLC-1.0.0-universal.dmg" class="btn-primary" download>
-      ↓ Free Download (Get 7 Days Free Trial Instantly)
+      ↓ Free Download (7-day free trial on install, no setup)
     </a>
     <a href="#pricing" class="btn-secondary">Lifetime License Pricing</a>
   </div>
@@ -548,14 +548,14 @@
         <p>Parse deep, nested subdirectories such as <code>Date/Location/Cam/XDROOT/Clip</code>. Turn on Deep Scan to traverse up to 3+ layers with zero depth boundaries.</p>
       </div>
       <div class="feature-card">
+        <div class="feature-icon">🎞</div>
+        <h3>Spacebar Playback &amp; Cache</h3>
+        <p>Select any clip and tap the spacebar to launch instant playback. Highly optimized thumbnail caching allows rapid folder switching without lagging.</p>
+      </div>
+      <div class="feature-card">
         <div class="feature-icon">🔒</div>
         <h3>Robust Fully Offline Guarantees</h3>
         <p>Isolated in deep woods, tunnels, or air-tight sound stages? ROLC validates licenses and processes video assets without any external network dependency.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🎬</div>
-        <h3>Native Player &amp; Quick Look</h3>
-        <p>Select any clip and tap the spacebar to launch macOS Quick Look instantly. Inspect high-fidelity video streams and hear tracks with zero playback lag.</p>
       </div>
     </div>
   </div>
@@ -576,7 +576,7 @@
         "While configuring workflows and offering technical assistance to drama editing teams, I watched assistants struggle daily, verifying and marking over a hundred raw clips inside Premiere Pro. I realized there was a critical need for a lightweight tool where I could instantly playback clips using just a spacebar, visually scrub thumbnails, rate/filter clips quickly, and import cleanly into Premiere."
       </div>
       <div class="story-paragraphs">
-        <p>That pain drove me to step back and craft a targeted desktop utility. Named after 'Roll Change' — the actual camera card-swapping slang used on set — <strong>ROLC</strong> packages exactly what you need to cut out the logging delay: fast ratings, elegant PDF sheets, and simple .cvp data sharing.</p>
+        <p>That pain drove me to step back and craft a targeted desktop utility. Named after the actual camera memory-swapping process on set — <strong>'Roll Change' (ROLC)</strong> — this tool packages exactly what you need to cut out the logging delay: fast ratings, elegant PDF sheets, and simple .cvp data sharing.</p>
         <p>We do not weigh down your Mac with unnecessary bloat or trap you in expensive, endless subscription fees. ROLC's sole purpose is saving you logging hours and letting you head home early.</p>
       </div>
     </div>
@@ -634,26 +634,26 @@
   <div class="how-inner">
     <div class="how-header">
       <p class="section-label">How It Works</p>
-      <h2 class="section-title">License Policy &amp; Quick Guide</h2>
-      <p class="section-sub">Zero complicated servers or account synchronization. Install and authenticate fully offline.</p>
+      <h2 class="section-title">From memory card to PDF list in 3 steps.</h2>
+      <p class="section-sub">No complex accounts, no server sync. Install, launch, and streamline your logging in 60 seconds.</p>
     </div>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
-        <h3>7 Days Free Trial</h3>
-        <p>Download and launch ROLC. You get <strong>full feature access for 7 days</strong> instantly, without entering any email or typing any license key.</p>
+        <h3>Select Folder</h3>
+        <p>Open ROLC and connect your SD/CFast card or external SSD. Turn on Deep Scan to grab all nested clips across subdirectories in one second.</p>
         <div class="step-divider">→</div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <h3>Get Lifetime License</h3>
-        <p>If you love ROLC, purchase the lifetime perpetual card before your 7-day trial expires, and find your Mac's unique <strong>Machine UUID</strong> inside the app.</p>
+        <h3>Rate on the Fly</h3>
+        <p>Use your keyboard keys <code>O</code>, <code>K</code>, and <code>X</code> to tag clips at lightspeed while scrubbing through thumbnails or utilizing the in-app player.</p>
         <div class="step-divider">→</div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>Permanent Key Delivery</h3>
-        <p>Input your Name, Email, and UUID in the form below and click request. We will register your hardware and dispatch your permanent RSA key to your inbox.</p>
+        <h3>Export &amp; Share</h3>
+        <p>Filter down to only the OK clips, and output a premium PDF report instantly. Or export a <code>.cvp</code> project file to carry your ratings to another Mac edit station.</p>
       </div>
     </div>
   </div>
@@ -695,13 +695,14 @@
           <p class="pricing-sub">Lifetime perpetual license · Pay once</p>
           <ul class="pricing-features">
             <li>Activate up to 2 devices simultaneously (UUID)</li>
+            <li>Official secure Naver SmartStore checkout</li>
             <li>Free minor-version software updates</li>
             <li>High-speed ProRes 422 thumbnail caches</li>
             <li>Unlimited professional PDF report exports</li>
             <li>1:1 developer email support</li>
           </ul>
         </div>
-        <a href="https://smartstore.naver.com/" target="_blank" class="pricing-btn">Purchase via SmartStore</a>
+        <a href="https://smartstore.naver.com/" target="_blank" class="pricing-btn">Purchase Lifetime License</a>
       </div>
 
       <!-- Team -->
@@ -799,11 +800,19 @@
 <section class="requirements" id="requirements">
   <div class="req-inner">
     <div>
-      <p class="section-label">System Requirements</p>
-      <h2 class="section-title">Perfected and optimized for modern macOS.</h2>
-      <p class="section-sub" style="margin-top:16px;">Built as a native Universal DMG, running directly on Apple Silicon (M1/M2/M3) and Intel Macs without any Rosetta emulation bottlenecks.</p>
+      <p class="section-label">System Requirements &amp; License Policy</p>
+      <h2 class="section-title">License Policy &amp; Info</h2>
+      <p class="section-sub" style="margin-top:16px;">ROLC guarantees offline processing performance, requiring zero complex network handshakes or online logins.</p>
+      <div style="text-align: left; margin-top: 24px; padding: 20px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--accent);">🔑 Offline Licensing Terms</h4>
+        <p style="font-size: 13.5px; color: var(--muted); line-height: 1.6;">
+          1. <strong>7-Day Automatic Free Trial:</strong> ROLC grants full capabilities for 7 days instantly on installation. No activation or account needed.<br />
+          2. <strong>Secure Purchase Handshake:</strong> Acquire your lifetime code at Naver SmartStore, then verify your Mac's unique Machine UUID.<br />
+          3. <strong>RSA Key Delivery:</strong> Submit your purchase info and Machine UUID below. ROLC support manually signs and dispatches your perpetual key to your inbox within 24 hours. Hardware swap services are fully supported if you upgrade your workstation.
+        </p>
+      </div>
     </div>
-    <div class="req-table">
+    <div class="req-table" style="margin-top: 36px;">
       <div class="req-row">
         <span class="req-label">Operating System</span>
         <span class="req-value">macOS 11 (Big Sur) or higher recommended</span>
