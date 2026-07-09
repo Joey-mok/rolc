@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ROLC — 드라마·영화 편집 전 클립 리뷰 및 레이팅 툴</title>
-  <meta name="description" content="편집 들어가기 전에 촬영 소스를 롤(Roll)별로 빠르게 훑고 분류하여 리포트를 뽑는 macOS 앱. 현직 DIT와 편집자가 직접 만든 초경량 실무 전용 뷰어." />
+  <meta name="description" content="편집 들어가기 전에 촬영 소스를 빠르게 훑고 분류하여 리포트를 뽑는 macOS 앱. 전직 DIT와 편집자가 직접 만든 초경량 실무 전용 뷰어." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -202,7 +202,7 @@
     .story-author { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
     .story-title { font-size: 13px; color: var(--accent); font-weight: 600; letter-spacing: 0.05em; }
     .story-quote {
-      font-size: 20px; font-weight: 700; line-height: 1.4; color: var(--text);
+      font-size: 18px; font-weight: 700; line-height: 1.5; color: var(--text);
       margin-bottom: 24px; position: relative; border-left: 4px solid var(--accent); padding-left: 16px;
     }
     .story-paragraphs p { font-size: 15px; color: var(--muted); margin-bottom: 16px; line-height: 1.8; }
@@ -296,7 +296,7 @@
     }
     .pricing-card.popular .pricing-btn:hover { background: var(--accent2); border-color: var(--accent2); }
 
-    /* ── INTERACTIVE TRIAL GENERATOR ── */
+    /* ── INTERACTIVE LICENSE REQUEST GENERATOR ── */
     .trial-generator {
       max-width: 720px; margin: 0 auto; background: var(--bg2); border: 1px solid var(--border);
       border-radius: 20px; padding: 48px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
@@ -481,7 +481,7 @@
     <li><a href="#features">주요기능</a></li>
     <li><a href="#brand-story">개발스토리</a></li>
     <li><a href="#pricing">요금제</a></li>
-    <li><a href="#trial-generator">체험키 발급</a></li>
+    <li><a href="#trial-generator">정품키 발급신청</a></li>
     <li><a href="#security-guide">실행가이드</a></li>
     <li><a href="#requirements">요구사양</a></li>
   </ul>
@@ -494,17 +494,17 @@
 <!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-badge">
-    <span></span> 현직 DIT·편집자가 실무를 위해 개발한 초경량 뷰어
+    <span></span> 전직 DIT·편집자가 실무를 위해 개발한 초경량 뷰어
   </div>
-  <h1>편집 들어가기 전에,<br /><em>소스부터</em> 빠르게 정리하세요.</h1>
-  <p>ROLC(Roll Change)는 촬영 직후 대량의 ProRes / MP4 클립을 순식간에 로드해 레이팅하고, 단 몇 번의 클릭만으로 편집팀에 인계할 완벽한 PDF 샷 리포트를 뽑아내는 독보적인 실무 툴입니다.</p>
+  <h1>편집 들어가기 전에,<br /><em>레이팅, 리포팅, 공유</em>까지 한 번에.</h1>
+  <p>ROLC(Roll Change)는 촬영 후 대량의 ProRes / MP4 클립을 순식간에 로드해 초고속 <strong>레이팅(등급 분류)</strong>을 하고, 원클릭으로 완벽한 <strong>PDF 샷 리포트</strong>를 출력하며, 프로젝트 파일(.cvp)을 통해 같은 NAS 환경 내에서 완벽하게 <strong>레이팅 상태를 공유 및 협업</strong>하는 실무 최적화 뷰어입니다.</p>
   <div class="hero-actions">
     <a href="./dist/ROLC-1.0.0-universal.dmg" class="btn-primary" download>
-      ↓ 무료 체험판 다운로드 (Universal macOS)
+      ↓ 무료 다운로드 (설치 시 바로 7일 사용 가능)
     </a>
-    <a href="#pricing" class="btn-secondary">라이선스 평생 소장권 구매</a>
+    <a href="#pricing" class="btn-secondary">라이선스 평생 소장권 요금안내</a>
   </div>
-  <p class="hero-meta">오프라인 RSA 인증 방식 · 1회 결제 평생 소장 · 기기 귀속 지원</p>
+  <p class="hero-meta">설치 즉시 인증 없이 7일간 완전 가동 · 1회 결제 평생 소장 · 오프라인 RSA 인증</p>
 </section>
 
 <!-- ── HERO SCREENSHOT ── -->
@@ -524,39 +524,39 @@
   <div class="features-inner">
     <div class="features-header">
       <p class="section-label">Features</p>
-      <h2 class="section-title">필요한 기능만.<br />군더더기 없이.</h2>
-      <p class="section-sub">현장에서도, 편집실에서도 밤샘 작업을 줄이고 퇴근 시간을 앞당기기 위해 설계됐습니다.</p>
+      <h2 class="section-title">가장 본질적인 3대 핵심 기둥.</h2>
+      <p class="section-sub">DIT와 보조 편집자, 연출진의 협업을 위해 꼭 필요한 실무 기능만을 정교하게 다듬었습니다.</p>
     </div>
     <div class="features-grid">
       <div class="feature-card">
-        <div class="feature-icon">🎞</div>
-        <h3>썸네일 그리드 — 한눈에 전체 소스</h3>
-        <p>NAS나 외장 SSD 폴더를 여는 즉시 수백 개의 클립이 썸네일 그리드로 펼쳐집니다. 고속 썸네일 캐싱 탑재로 무거운 프로그램 없이 마우스 스크러빙으로 내용물을 즉시 확인합니다.</p>
-      </div>
-      <div class="feature-card">
         <div class="feature-icon">⌨️</div>
-        <h3>키보드 단축키 등급 분류 (O/K/X)</h3>
-        <p>클립을 재생하며 키보드 'O'(OK), 'K'(Keep), 'X'(Reject), 'U'(Unrated) 단 한 글자 입력으로 등급을 매깁니다. 마우스에 손을 대지 않는 초인적 속도를 경험하세요.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔍</div>
-        <h3>하위 폴더 Deep Scan & 정렬</h3>
-        <p><code>날짜/장소/카메라/XDROOT/Clip</code> 같이 깊게 숨겨진 폴더도 'Deep Scan' 한 번에 3단계 깊이 제한 없이 완전 재귀 탐색하여 영상 클립을 빠짐없이 가져옵니다. 특정 카메라만 골라볼 수도 있습니다.</p>
+        <h3>01. 초고속 클립 레이팅 (O/K/X)</h3>
+        <p>무거운 NLE를 켤 필요 없이, 썸네일 캐싱이 탑재된 그리드 화면에서 키보드 O(OK), K(Keep), X(Reject), U(Unrated) 단 한 글자 탭으로 소스를 초고속 분류합니다.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📄</div>
-        <h3>PDF 샷 리스트 리포트 출력</h3>
-        <p>레이팅 완료 즉시 깔끔한 그리드형 또는 상세 리스트형 PDF 리포트를 내보냅니다. 사이드바 폴더 이름변경 기능과 연계되어, PDF 헤더에 변경된 폴더명이 그대로 박힙니다.</p>
+        <h3>02. PDF 샷 리스트 리포트 생성</h3>
+        <p>레이팅 완료 후 즉시 깔끔한 그리드형 또는 리스트형 PDF 리포트를 출력하여 인계합니다. 사이드바 폴더 이름변경 기능과 연계되어 리포트 헤더에 지정 폴더명이 그대로 적용됩니다.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📦</div>
-        <h3>프로젝트 저장 및 불러오기 (.cvp)</h3>
-        <p>레이팅 결과를 가벼운 <code>.cvp</code> 프로젝트 파일로 저장해 동료나 타 편집실 Mac에 전달하세요. 클라우드나 DB 서버가 없어도 완벽한 협업 연동을 지원합니다.</p>
+        <h3>03. 프로젝트 기반 레이팅 공유 &amp; 협업</h3>
+        <p>분류 결과는 가벼운 <code>.cvp</code> 프로젝트 파일로 저장됩니다. 같은 NAS 환경을 공유하는 동료의 Mac에서 프로젝트를 불러오는 것만으로 완벽한 협업 인계가 가능합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>하위 폴더 Deep Scan (무제한)</h3>
+        <p><code>날짜/장소/카메라/XDROOT/Clip</code> 등 깊은 카메라 카드 디렉토리도 최대 단계 제한 없는 'Deep Scan'을 적용하여, 폴더 구조에 관계없이 클립들을 한눈에 펼쳐옵니다.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🔒</div>
-        <h3>강력한 RSA 오프라인 라이선스</h3>
-        <p>인터넷이나 휴대전화 수신이 차단되는 지하 스튜디오, 숲속 야외 로케이션, 해외 오지 현장에서도 완전 오프라인으로 라이선스 키 등록과 프로그램 실행이 완벽 작동합니다.</p>
+        <h3>RSA 완전 오프라인 구동 보장</h3>
+        <p>인터넷이나 통신 전파가 아예 차단되는 터널, 산속 야외 로케이션, 촬영 스튜디오 현장에서도 별도 서버 인증 없이 라이선스 작동과 플레이백 및 리포트 생성이 완벽하게 동작합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎬</div>
+        <h3>자체 초경량 재생 &amp; Quick Look</h3>
+        <p>클립을 선택하고 스페이스바만 누르면 macOS Quick Look 미리보기가 구동되며, 고속 디코더를 활용해 고화질 클립을 렉 없이 실시간 검수하고 소리를 재생할 수 있습니다.</p>
       </div>
     </div>
   </div>
@@ -567,18 +567,18 @@
   <div class="story-inner">
     <div class="story-profile">
       <div class="story-avatar">🎬</div>
-      <h4 class="story-author">목조이 (Joey Mok)</h4>
-      <p class="story-title">ROLC 개발자 / 현직 DIT & 편집자</p>
+      <h4 class="story-author">ROLC 개발자</h4>
+      <p class="story-title">전직 DIT & 편집자</p>
     </div>
     <div class="story-text">
       <p class="section-label">Developer's Story</p>
       <h2 class="section-title">"현장의 비효율에 답답해 직접 코딩했습니다"</h2>
       <div class="story-quote">
-        "숲속 촬영지나 전파가 끊기는 터널 안, 하루에만 수백 기가의 ProRes422 대용량 클립이 쏟아집니다. 메인 감독에게 보고할 OK컷 분류를 위해 연 120만 원이 넘는 Silverstack을 구독하기는 너무 버겁고, 단순 뷰어인 Kyno는 업데이트가 끊겼습니다. 보조 편집자들과 조연출은 매번 무거운 NLE 프로그램을 켜고 밤새 일일이 더블클릭하며 지쳐 가고 있었습니다."
+        "드라마 편집팀 환경 구축 및 기술 지원 업무에서 하루에 100개가 넘는 클립을 프리미어에서 일일이 확인하고, 마킹하는 과정에서 빠른 썸네일 뷰와 스페이스 바 키 하나로 바로 플레이백 하고, 분류하고, 필터링해서 프리미어에 임포트 하는 가볍고 편리한 앱이 있으면 좋겠다는 생각을 했음"
       </div>
       <div class="story-paragraphs">
-        <p>그 뼈아픈 현장 경험을 바탕으로, 1인 개발자로 복귀하여 오직 실무자를 위한 초경량 뷰어를 개발했습니다. 현장의 은어이자 핵심 소통 절차인 <strong>'롤체(Roll Change)'</strong>에서 이름을 딴 <strong>ROLC</strong>는, 단축키 3개와 한글 PDF 리포트 생성이라는 가장 단순하고 날카로운 무기만을 담고 있습니다.</p>
-        <p>과도한 기능으로 무거워지거나 고가의 정기 구독료를 요구하지 않습니다. 오직 편집팀의 빠른 퇴근과 현장의 가벼운 워크플로우를 보장하는 단 하나의 파트너가 되겠습니다.</p>
+        <p>그 뼈아픈 현장의 아쉬움을 바탕으로, 오직 영상 편집 실무자만을 위한 초경량 뷰어를 개발했습니다. 현장의 핵심 소통 절차인 <strong>'롤체(Roll Change)'</strong>에서 이름을 딴 <strong>ROLC</strong>는, 단축키 레이팅과 한글 PDF 리포트 생성, 간편한 .cvp 상태 공유라는 가장 단순하고 강력한 무기만을 담고 있습니다.</p>
+        <p>불필요한 과도한 사양으로 프로그램을 무겁게 하거나 불합리하게 비싼 고가의 매달 정기 구독료를 일절 요구하지 않습니다. 오직 편집팀의 잠을 늘려주고 가벼운 워크플로우를 보장하는 동반자가 되겠습니다.</p>
       </div>
     </div>
   </div>
@@ -635,26 +635,26 @@
   <div class="how-inner">
     <div class="how-header">
       <p class="section-label">How It Works</p>
-      <h2 class="section-title">메모리 카드 옮긴 후<br />선택본 완성까지 단 3단계.</h2>
-      <p class="section-sub">계정 생성도, 세팅도 필요 없습니다. 설치 즉시 마법 같은 속도를 직접 느껴보세요.</p>
+      <h2 class="section-title">라이선스 정책 및 사용법 가이드</h2>
+      <p class="section-sub">설치부터 라이선스 획득까지, 복잡한 인증 서버 연동 없이 100% 직관적으로 흐릅니다.</p>
     </div>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
-        <h3>폴더 열기</h3>
-        <p>프로그램을 켜고 SD 카드나 SSD 안의 미디어 루트 폴더를 연결합니다. Deep Scan 옵션을 켜면 모든 하위 뎁스 영상까지 1초 만에 스캔합니다.</p>
+        <h3>즉시 7일 무료 사용</h3>
+        <p>ROLC 앱을 다운로드받아 설치하시면, 귀찮은 가입이나 라이선스 인증 단계 없이 <strong>즉시 7일간 완전한 전체 기능</strong>을 바로 사용하실 수 있습니다.</p>
         <div class="step-divider">→</div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <h3>키보드로 등급 분류</h3>
-        <p>썸네일 스크러빙 또는 내장 플레이어로 영상을 재생하면서 키보드 <code>O</code>, <code>K</code>, <code>X</code> 키를 탭하여 번개 같은 속도로 등급을 마킹합니다.</p>
+        <h3>평생 라이선스 결제</h3>
+        <p>프로그램이 마음에 드실 경우, 7일 평가판이 만료되기 전에 평생 소장권을 결제하신 뒤 <strong>Mac의 Machine UUID</strong>를 확인합니다.</p>
         <div class="step-divider">→</div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>필터·내보내기·공유</h3>
-        <p>상단 필터로 OK컷만 고르고, 원클릭 PDF 리포트 저장으로 결과 리포트를 뽑아냅니다. <code>.cvp</code> 프로젝트 파일로 저장해 동료 편집실과 레이팅 상태를 공유하세요.</p>
+        <h3>이메일로 정품 키 발급</h3>
+        <p>하단 신청기를 통해 이름, 구매 메일, Machine UUID를 적어 <strong>rolc.official@gmail.com</strong>으로 발송하시면, 확인 후 수분 내에 이메일로 영구 RSA 정품 라이선스 키를 배달해 드립니다.</p>
       </div>
     </div>
   </div>
@@ -666,82 +666,78 @@
     <div class="pricing-header">
       <p class="section-label">Pricing Plans</p>
       <h2 class="section-title">단순하고 솔직한 평생 소장권 요금제.</h2>
-      <p class="section-sub">매달 청구되는 고통스러운 구독료가 없습니다. 단 한 번의 결제로 ROLC를 영원히 소장하세요.</p>
+      <p class="section-sub">매달 결제되는 지긋지긋한 구독료가 없습니다. 단 한 번 구매하면 평생 내 소유가 됩니다.</p>
     </div>
-    
     <div class="pricing-grid">
-      <!-- Trial Plan -->
+      <!-- Trial -->
       <div class="pricing-card">
         <div>
-          <h3>14일 무료 체험</h3>
-          <p class="pricing-desc">가입 없이 ROLC의 100% 모든 기능을 사용해 볼 수 있습니다.</p>
-          <div class="pricing-price">₩0 <span>/ 14일 체험</span></div>
-        </div>
-        <div>
+          <h3>7일 무료 체험판</h3>
+          <p class="pricing-desc">설치 시 인증 절차 없이 즉시 활성화</p>
+          <div class="pricing-price"><sup>₩</sup>0</div>
+          <p class="pricing-sub">7일 무제한 기능 사용 가능</p>
           <ul class="pricing-features">
-            <li>모든 영상 포맷 무제한 스캔</li>
-            <li>Deep Scan (하위 3단계 재귀)</li>
-            <li>PDF 그리드/리스트 리포트 생성</li>
-            <li>.cvp 프로젝트 내보내기/가져오기</li>
-            <li>100% 오프라인 인증 작동</li>
+            <li>다운로드 즉시 원클릭 실행</li>
+            <li>정품과 100% 동일한 기능 탑재</li>
+            <li>체크섬/서버 인증 필요 없음</li>
+            <li>PDF 리포트 무제한 생성</li>
           </ul>
-          <a href="#trial-generator" class="pricing-btn">체험 라이선스 키 발급하기</a>
         </div>
+        <a href="./dist/ROLC-1.0.0-universal.dmg" class="pricing-btn" download>체험판 다운로드 (DMG)</a>
       </div>
 
-      <!-- Personal Plan -->
+      <!-- Personal -->
       <div class="pricing-card popular">
         <div>
+          <div class="pricing-badge">✦ 일회성 구매</div>
           <h3>개인 프리랜서 라이선스</h3>
-          <p class="pricing-desc">프리랜서 편집자, DIT, 현장 연출 보조를 위한 1인 소장 플랜입니다.</p>
-          <div class="pricing-price">₩59,000 <span>/ 평생 소장권</span></div>
-        </div>
-        <div>
+          <p class="pricing-desc">실무를 빠르게 끝내고 조기 퇴근을 원하는 분</p>
+          <div class="pricing-price"><sup>₩</sup>59,000</div>
+          <p class="pricing-sub">평생 소장권 · 1회 단일 결제</p>
           <ul class="pricing-features">
-            <li>최대 2대 기기 동시 활성화 (UUID 바인딩)</li>
-            <li>평생 무료 마이너 버전 업데이트</li>
-            <li>수백 기가 ProRes 고속 캐싱 지원</li>
-            <li>한글 PDF 샷 리포트 무제한 출력</li>
-            <li>이메일 1:1 고객 기술지원</li>
+            <li>최대 2대 기기 동시 활성화 (UUID 귀속)</li>
+            <li>평생 무료 버전 업데이트 보장</li>
+            <li>ProRes422 HQ 고속 썸네일 캐싱</li>
+            <li>PDF 샷 리포트 출력 기능 제공</li>
+            <li>1:1 고객 기술지원 보장</li>
           </ul>
-          <a href="https://paypal.me/joeymok" target="_blank" class="pricing-btn">평생 소장 라이선스 구매</a>
         </div>
+        <a href="https://smartstore.naver.com/" target="_blank" class="pricing-btn">스마트스토어로 안전 구매</a>
       </div>
 
-      <!-- Team Plan -->
+      <!-- Team -->
       <div class="pricing-card">
         <div>
           <h3>팀/프로덕션 라이선스</h3>
-          <p class="pricing-desc">중소 규모 제작사, 여러 Mac을 공유해 쓰는 편집실을 위한 협업 플랜입니다.</p>
-          <div class="pricing-price">₩199,000 <span>/ 평생 소장권</span></div>
-        </div>
-        <div>
+          <p class="pricing-desc">Mac 여러 대를 번갈아 쓰는 협업 편집실 및 제작사</p>
+          <div class="pricing-price"><sup>₩</sup>199,000</div>
+          <p class="pricing-sub">평생 소장권 · 1회 결제</p>
           <ul class="pricing-features">
-            <li>최대 5대 기기 동시 활성화</li>
-            <li>기기 교체 가능한 커스텀 RSA 키 발급</li>
-            <li>.cvp 프로젝트 연계 다중폴더 협업 지원</li>
-            <li>요청 시 PDF 리포트 서식 커스텀 지원</li>
-            <li>최우선 기술 지원 및 업데이트 보장</li>
+            <li>최대 5대 기기 동시 활성화 지원</li>
+            <li>유연한 기기 교체 가능</li>
+            <li>.cvp 연동 다중 폴더 편집 협업 세팅</li>
+            <li>제작사 맞춤 PDF 포맷 서식 조정 지원</li>
+            <li>최우선 기술 자문 및 핫라인 지원</li>
           </ul>
-          <a href="mailto:contact@rolc.app?subject=ROLC%20Team%20License%20Inquiry" class="pricing-btn">프로덕션 라이선스 문의</a>
         </div>
+        <a href="mailto:rolc.official@gmail.com?subject=ROLC%20Team%20License%20Inquiry" class="pricing-btn">팀 라이선스 메일 문의</a>
       </div>
     </div>
 
-    <!-- ── INTERACTIVE TRIAL GENERATOR WIDGET ── -->
+    <!-- ── INTERACTIVE LICENSE REQUEST WIDGET ── -->
     <div class="trial-generator" id="trial-generator">
       <div class="generator-header">
-        <h3>🎁 즉시 14일 체험 라이선스 키 발급받기</h3>
-        <p>앱을 켜고 하단 박스에 표시된 <strong>Machine UUID</strong>를 복사해 아래 입력해 주시면 즉시 라이선스 키가 생성됩니다.</p>
+        <h3>✉️ 구매 유저 정품 라이선스 키 발급 신청서</h3>
+        <p>정품권을 구매하신 유저분들은 구매 메일과 이름, 그리고 Mac의 <strong>Machine UUID</strong>를 아래에 적어주세요.<br />신청 완료 버튼 클릭 시 <strong>rolc.official@gmail.com</strong> 메일 앱이 자동 연동되어 확인 즉시 정품 RSA 키를 송부해 드립니다.</p>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label for="reg-name">사용자 이름</label>
-          <input type="text" id="reg-name" placeholder="예: 김철수 (한글/영문 모두 가능)" />
+          <label for="reg-name">구매자 이름</label>
+          <input type="text" id="reg-name" placeholder="예: 홍길동 (주문자 성명)" />
         </div>
         <div class="form-group">
-          <label for="reg-email">이메일 주소</label>
-          <input type="email" id="reg-email" placeholder="예: editor@example.com" />
+          <label for="reg-email">구매 이메일 주소</label>
+          <input type="email" id="reg-email" placeholder="예: buyer@example.com" />
         </div>
       </div>
       <div class="form-group" style="margin-bottom: 20px;">
@@ -749,19 +745,19 @@
         <input type="text" id="reg-uuid" placeholder="예: A1B2C3D4-E5F6-7890-ABCD-EF1234567890" />
       </div>
       <p class="form-info-text">
-        * Machine UUID는 다운로드받은 ROLC 앱 최초 실행 시 뜨는 활성화 화면 하단 "Machine UUID" 박스에서 원클릭으로 손쉽게 복사해 올 수 있습니다. <a href="#security-guide">앱 실행 방법을 모르겠다면?</a>
+        * Machine UUID는 ROLC 앱 최초 실행 시 뜨는 인증 팝업 화면 하단 또는 설정 창에서 원클릭으로 쉽게 복사할 수 있습니다. <a href="#security-guide">실행 보안 에러 해결책은?</a>
       </p>
-      <button class="btn-generate" onclick="generateTrialKey()">14일 완전기능 체험판 라이선스 키 생성</button>
+      <button class="btn-generate" onclick="sendLicenseRequestEmail()">정품 라이선스 발급 메일 전송하기</button>
       
       <div class="generator-result" id="generator-result">
-        <h4 style="color: var(--green); font-size: 15px; font-weight: 700; margin-bottom: 4px;">🎉 ROLC 14일 체험판 라이선스 발급 완료!</h4>
-        <p style="font-size: 13px; color: var(--muted);">아래 키를 복사해 앱의 라이선스 입력창에 붙여넣으세요. 오프라인 RSA 서명 검증을 거쳐 즉시 활성화됩니다.</p>
-        <div class="result-key">
-          <span id="generated-key-text">ROLC-eyJ0eXBlIjoidHJpYWwiLCJuYW1lIjoi...</span>
-          <button class="btn-copy" onclick="copyTrialKey()">복사하기</button>
+        <h4 style="color: var(--green); font-size: 15px; font-weight: 700; margin-bottom: 4px;">📬 정품 발급 신청 메일 템플릿 완성!</h4>
+        <p style="font-size: 13px; color: var(--muted);">메일 프로그램이 자동으로 안 열릴 경우, 아래 신청 서식을 복사하셔서 <strong>rolc.official@gmail.com</strong>으로 발송해 주세요.</p>
+        <div class="result-key" style="flex-direction: column; align-items: stretch;">
+          <textarea id="email-body-text" style="width: 100%; height: 140px; background: #0c0e14; border: none; color: var(--green); font-family: monospace; font-size: 13px; resize: none; outline: none;" readonly></textarea>
+          <button class="btn-copy" style="margin-top: 10px; align-self: flex-end;" onclick="copyEmailTemplate()">템플릿 텍스트 복사</button>
         </div>
         <p class="result-instruction">
-          * 입력해 주신 이메일(<strong><span id="registered-email"></span></strong>)로도 만료 안내와 다운로드 링크가 포함된 라이선스 백업 메일이 자동 전송되었습니다.
+          * 담당자가 결제 내역 확인 및 Machine UUID 등록 후 24시간 내에 평생 사용 가능한 정품 RSA 라이선스 키를 회신해 드립니다.
         </p>
       </div>
     </div>
@@ -773,12 +769,12 @@
   <div class="security-inner">
     <p class="section-label">macOS Installation Tip</p>
     <h2 class="section-title">처음 실행 시 "확인되지 않은 개발자" 경고가 뜨나요?</h2>
-    <p class="section-sub" style="margin: 0 auto;">ROLC는 보안 인증 비용을 배제하여 고객 단가를 획득하기 위해, 초기 설치 시 애플 공증 서명을 생략했습니다. 해킹 프로그램이 아니니 안심하고 아래 방법 중 하나로 실행하세요.</p>
+    <p class="section-sub" style="margin: 0 auto;">ROLC는 과도한 보안 인증 연간 유지비용을 배제하여 고객 단가를 낮추고자 최초 설치 시 애플 정식 공증 서명을 생략했습니다. 해킹 프로그램이 아니니 안심하고 아래 방법 중 하나로 실행하세요.</p>
     
     <div class="guide-grid">
       <div class="guide-card">
         <h3><span>A</span> 간편 우클릭 열기 (권장)</h3>
-        <p>가장 단순하고 안전하게 게이트키퍼를 우회하는 방법입니다. 최초 1회만 설정하면 다음부터는 더블클릭으로 바로 켜집니다.</p>
+        <p>가장 단순하고 안전하게 게이트키퍼를 우회하는 방법입니다. 최초 1회만 설정하면 다음부터는 일반 더블클릭으로 바로 켜집니다.</p>
         <ol>
           <li>응용 프로그램(Applications) 폴더 안의 <strong>ROLC</strong> 아이콘을 우클릭(또는 Control+클릭)합니다.</li>
           <li>메뉴에서 <strong>"열기"</strong>를 선택합니다.</li>
@@ -788,12 +784,12 @@
       
       <div class="guide-card">
         <h3><span>B</span> 터미널 명령어로 공증 보안 해제</h3>
-        <p>보다 완벽한 앱 실행 차단을 풀고 싶은 사용자, 또는 게이트키퍼 경고가 계속해서 뜨는 경우 터미널을 이용해 명시적으로 해제할 수 있습니다.</p>
+        <p>보다 완벽하게 게이트키퍼 경고가 계속해서 뜨는 문제를 풀고 싶다면 터미널 명령어를 사용하세요.</p>
         <ol>
           <li>맥의 <strong>'터미널(Terminal.app)'</strong> 프로그램을 켭니다.</li>
-          <li>아래 명령어를 통째로 복사한 뒤 터미널 창에 붙여넣고 Enter를 탭합니다.</li>
+          <li>아래 명령어를 통째로 복사한 뒤 터미널 창에 붙여넣고 Enter를 입력합니다.</li>
           <code>xattr -cr /Applications/ROLC.app</code>
-          <li>이제 ROLC 앱을 응용 프로그램 폴더에서 손쉽게 더블클릭하여 바로 가동합니다.</li>
+          <li>이제 ROLC 앱을 응용 프로그램 폴더에서 정상적으로 더블클릭하여 가동합니다.</li>
         </ol>
       </div>
     </div>
@@ -827,7 +823,7 @@
       </div>
       <div class="req-row">
         <span class="req-label">라이선스 인증</span>
-        <span class="req-value">오프라인 RSA 비대칭키 일치 확인인증 <span class="chip green">완전 오프라인 가능</span></span>
+        <span class="req-value">오프라인 RSA 비대칭키 일치 확인인증 <span class="chip green">인증 없이 7일 가동</span></span>
       </div>
     </div>
   </div>
@@ -891,78 +887,72 @@
       ROLC
     </div>
     <p class="footer-sub">&copy; 2026 ROLC. All rights reserved. </p>
-    <p class="footer-sub" style="font-size: 11px;">Built by Joey Mok in Seoul, Korea.</p>
+    <p class="footer-sub" style="font-size: 11px;">Built by ROLC Team in Seoul, Korea.</p>
   </div>
   <div class="footer-links">
     <a href="#features">기능</a>
     <a href="#brand-story">개발 스토리</a>
     <a href="#pricing">요금제</a>
-    <a href="#trial-generator">체험키 발급</a>
+    <a href="#trial-generator">정품키 발급 신청</a>
     <a href="#security-guide">실행 가이드</a>
-    <a href="mailto:contact@rolc.app">문의 메일</a>
+    <a href="mailto:rolc.official@gmail.com">문의 메일</a>
   </div>
 </footer>
 
 <script>
-  function generateTrialKey() {
+  function sendLicenseRequestEmail() {
     var name = document.getElementById("reg-name").value.trim();
     var email = document.getElementById("reg-email").value.trim();
     var uuid = document.getElementById("reg-uuid").value.trim();
 
     if (!name) {
-      alert("이름을 입력해 주세요.");
+      alert("구매자 이름을 입력해 주세요.");
       return;
     }
     if (!email || !email.includes("@")) {
-      alert("유효한 이메일 주소를 입력해 주세요.");
+      alert("유효한 구매 이메일 주소를 입력해 주세요.");
       return;
     }
     if (!uuid) {
-      alert("Machine UUID를 입력해 주세요.\nROLC 앱을 켜면 즉시 확인하고 복사할 수 있습니다.");
+      alert("Mac의 Machine UUID를 입력해 주세요.\n앱 최초 기동 화면 하단에서 손쉽게 복사해 올 수 있습니다.");
       return;
     }
 
-    // Let's validate UUID format simply
     var uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
     if (!uuidRegex.test(uuid)) {
-      alert("UUID 형식이 올바르지 않습니다.\n8-4-4-4-12 형태의 영숫자인지 확인하세요.\n예: A1B2C3D4-E5F6-7890-ABCD-EF1234567890");
+      alert("UUID 형식이 올바르지 않습니다.\n8-4-4-4-12 형태의 대문자 영숫자인지 확인해 주세요.\n예: A1B2C3D4-E5F6-7890-ABCD-EF1234567890");
       return;
     }
 
-    // Generate a realistic base64url encoded payload + mock signature
-    // Since we cannot securely RSA sign client-side (no private key on the front end!),
-    // we generate a beautiful, valid-looking trial key containing their data!
-    var payload = {
-      type: "trial",
-      issued: new Date().toISOString().split('T')[0],
-      expiry: new Date(Date.now() + 14 * 24 * 3600 * 1000).toISOString().split('T')[0],
-      uuid: uuid,
-      name: name
-    };
+    // Build the mail template text
+    var subject = "[ROLC 정품 라이선스 키 발급 신청] " + name + " (" + email + ")";
+    var body = "안녕하세요 ROLC 정품 라이선스 담당자님,\n\nROLC 제품 구매에 따른 영구 정품 라이선스 키 발급을 신청합니다.\n\n[신청 정보]\n1. 구매자 이름: " + name + "\n2. 구매 이메일: " + email + "\n3. Mac Machine UUID: " + uuid + "\n\n구매 내역 대조 후, 본 Mac에서 평생 작동 가능한 정품 오프라인 라이선스 키 송부를 부탁드립니다.\n감사합니다.";
 
-    var payloadStr = btoa(unescape(encodeURIComponent(JSON.stringify(payload))))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-      
-    // Mock signature for beautiful representation
-    var mockSig = "MOCK_SIG_" + btoa(name + uuid).substring(0, 48).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    var finalKey = "ROLC-" + payloadStr + "." + mockSig;
-
-    // Show result
-    document.getElementById("generated-key-text").innerText = finalKey;
-    document.getElementById("registered-email").innerText = email;
+    // Pre-fill target textarea
+    document.getElementById("email-body-text").value = body.replace(/\n/g, '\n');
     document.getElementById("generator-result").classList.add("active");
     
-    // Scroll to the result smoothly
+    // Smooth scroll to the template box
     document.getElementById("generator-result").scrollIntoView({ behavior: 'smooth' });
+
+    // Try to trigger user's native email client
+    var mailtoUrl = "mailto:rolc.official@gmail.com" + 
+                    "?subject=" + encodeURIComponent(subject) + 
+                    "&body=" + encodeURIComponent(body.replace(/\n/g, '\r\n'));
+    
+    // Open in a new tab/iframe safely
+    window.location.href = mailtoUrl;
   }
 
-  function copyTrialKey() {
-    var keyText = document.getElementById("generated-key-text").innerText;
-    navigator.clipboard.writeText(keyText).then(function() {
-      alert("체험판 라이선스 키가 클립보드에 복사되었습니다! ROLC 앱에 붙여넣으세요.");
-    }, function() {
-      alert("복사 실패. 키 값을 마우스 드래그로 직접 긁어 복사해 주세요.");
-    });
+  function copyEmailTemplate() {
+    var textarea = document.getElementById("email-body-text");
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      alert("신청 이메일 서식이 클립보드에 복사되었습니다!\n메일함으로 이동하셔서 복사된 서식을 메일 본문에 붙여넣어 rolc.official@gmail.com 으로 발송해 주세요.");
+    } catch (err) {
+      alert("복사 실패. 마우스 드래그로 직접 긁어 복사해 주세요.");
+    }
   }
 </script>
 
