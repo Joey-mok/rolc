@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ROLC — Ultra-Lightweight Media Clip Review & Rating Tool for macOS</title>
+  <meta name="description" content="Scan, rate, and organize video clips into professional shot lists before you edit. Built by on-set DIT and editors, designed for rapid offline workflow on macOS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0e11;
+      --bg2:       #13151a;
+      --bg3:       #1a1d24;
+      --border:    #2a2d36;
+      --text:      #e8eaf0;
+      --muted:     #7c8494;
+      --accent:    #4f6ef7;
+      --accent2:   #3a56d4;
+      --green:     #2ecc71;
+      --ok:        #4f6ef7;
+      --keep:      #f5a623;
+      --reject:    #e74c3c;
+      --radius:    12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      height: 60px;
+      background: rgba(13,14,17,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 18px; font-weight: 800; letter-spacing: 0.08em;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-logo svg { flex-shrink: 0; }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #fff;
+      padding: 8px 16px; border-radius: 8px;
+      text-decoration: none; font-size: 13px; font-weight: 600;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent2); }
+    .nav-lang {
+      display: flex; align-items: center; gap: 8px; margin-right: 12px;
+    }
+    .nav-lang a {
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      text-decoration: none; padding: 3px 8px; border-radius: 4px;
+      border: 1px solid transparent; transition: all 0.2s;
+    }
+    .nav-lang a:hover { color: var(--text); }
+    .nav-lang a.active {
+      color: var(--text); border-color: var(--border);
+      background: var(--bg3);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 140px 48px 80px;
+      text-align: center;
+      max-width: 880px; margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(79,110,247,0.12); border: 1px solid rgba(79,110,247,0.3);
+      color: #8fa6fb; border-radius: 100px;
+      padding: 4px 14px; font-size: 13px; font-weight: 500;
+      margin-bottom: 28px;
+    }
+    .hero-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; display: inline-block; }
+    .hero h1 {
+      font-size: clamp(34px, 5vw, 60px); font-weight: 900;
+      line-height: 1.15; letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      font-size: 19px; color: var(--muted); line-height: 1.75;
+      max-width: 680px; margin: 0 auto 40px;
+    }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      padding: 14px 32px; border-radius: 10px;
+      text-decoration: none; font-size: 16px; font-weight: 700;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--bg3); color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px 32px; border-radius: 10px;
+      text-decoration: none; font-size: 16px; font-weight: 600;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--muted); transform: translateY(-1px); }
+    .hero-meta {
+      margin-top: 20px; font-size: 13px; color: var(--muted);
+    }
+
+    /* ── SCREENSHOT ── */
+    .screenshot-wrap {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px 80px;
+    }
+    .mac-window {
+      background: var(--bg3); border-radius: 14px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .mac-titlebar {
+      background: #1e2028; height: 38px;
+      display: flex; align-items: center; padding: 0 16px; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mac-btn { width: 12px; height: 12px; border-radius: 50%; }
+    .mac-btn.close  { background: #ff5f57; }
+    .mac-btn.min    { background: #febc2e; }
+    .mac-btn.max    { background: #28c840; }
+    .mac-window img { width: 100%; display: block; }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 96px 48px; }
+    .section-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.10em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(26px, 3.8vw, 42px); font-weight: 800;
+      letter-spacing: -0.02em; line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px; color: var(--muted); max-width: 540px; line-height: 1.75;
+    }
+
+    /* ── FEATURES ── */
+    .features { background: var(--bg2); }
+    .features-inner { max-width: 1100px; margin: 0 auto; }
+    .features-header { text-align: center; margin-bottom: 64px; }
+    .features-header .section-sub { margin: 0 auto; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(79,110,247,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 16px;
+    }
+    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* ── BRAND STORY ── */
+    .brand-story { background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .story-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: center; }
+    .story-profile { text-align: center; }
+    .story-avatar {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #7b9cff);
+      margin: 0 auto 24px; display: flex; align-items: center; justify-content: center;
+      font-size: 48px; border: 4px solid var(--border);
+    }
+    .story-author { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .story-title { font-size: 13px; color: var(--accent); font-weight: 600; letter-spacing: 0.05em; }
+    .story-quote {
+      font-size: 19px; font-weight: 700; line-height: 1.45; color: var(--text);
+      margin-bottom: 24px; position: relative; border-left: 4px solid var(--accent); padding-left: 16px;
+    }
+    .story-paragraphs p { font-size: 15px; color: var(--muted); margin-bottom: 16px; line-height: 1.8; }
+
+    /* ── RATING DEMO ── */
+    .rating-section { max-width: 1100px; margin: 0 auto; }
+    .rating-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .rating-badges { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+    .rating-badge {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px 20px;
+    }
+    .rating-key {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; flex-shrink: 0;
+    }
+    .rating-key.ok     { background: rgba(79,110,247,0.2); color: var(--ok); border: 1px solid rgba(79,110,247,0.4); }
+    .rating-key.keep   { background: rgba(245,166,35,0.15); color: var(--keep); border: 1px solid rgba(245,166,35,0.3); }
+    .rating-key.reject { background: rgba(231,76,60,0.15); color: var(--reject); border: 1px solid rgba(231,76,60,0.3); }
+    .rating-badge-text h4 { font-size: 15px; font-weight: 700; }
+    .rating-badge-text p  { font-size: 13px; color: var(--muted); }
+    .rating-screenshot { position: relative; }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: var(--bg2); }
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+    .how-header { text-align: center; margin-bottom: 64px; }
+    .how-header .section-sub { margin: 0 auto; }
+    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; }
+    .step { position: relative; text-align: center; padding: 32px 24px; }
+    .step-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; color: var(--accent);
+      margin: 0 auto 20px;
+    }
+    .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .step p  { font-size: 14px; color: var(--muted); line-height: 1.75; }
+    .step-divider {
+      position: absolute; top: 58px; right: -16px;
+      color: var(--border); font-size: 24px;
+    }
+
+    /* ── PRICING ── */
+    .pricing { background: var(--bg); border-top: 1px solid var(--border); }
+    .pricing-inner { max-width: 1100px; margin: 0 auto; }
+    .pricing-header { text-align: center; margin-bottom: 64px; }
+    .pricing-header .section-sub { margin: 0 auto; }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px; margin-bottom: 64px;
+    }
+    .pricing-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 20px; padding: 48px 36px;
+      position: relative; overflow: hidden; display: flex;
+      flex-direction: column; justify-content: space-between;
+      transition: all 0.3s;
+    }
+    .pricing-card.popular {
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(79,110,247,0.15);
+    }
+    .pricing-card.popular::before {
+      content: 'Popular'; position: absolute; top: 16px; right: 16px;
+      background: var(--accent); color: #fff; font-size: 11px; font-weight: 700;
+      padding: 4px 12px; border-radius: 100px; text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pricing-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .pricing-card .pricing-desc { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+    .pricing-price { font-size: 40px; font-weight: 900; margin-bottom: 24px; display: flex; align-items: baseline; }
+    .pricing-price span { font-size: 14px; color: var(--muted); font-weight: 500; margin-left: 6px; }
+    .pricing-features { list-style: none; margin-bottom: 36px; border-top: 1px solid var(--border); padding-top: 24px; }
+    .pricing-features li { font-size: 14px; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .pricing-features li::before { content: '✓'; color: var(--green); font-weight: 700; }
+    .pricing-btn {
+      display: block; text-align: center; background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); padding: 12px 24px; border-radius: 8px; text-decoration: none;
+      font-size: 14px; font-weight: 700; transition: all 0.2s;
+    }
+    .pricing-btn:hover { border-color: var(--muted); background: var(--border); }
+    .pricing-card.popular .pricing-btn {
+      background: var(--accent); border-color: var(--accent); color: #fff;
+    }
+    .pricing-card.popular .pricing-btn:hover { background: var(--accent2); border-color: var(--accent2); }
+
+    /* ── INTERACTIVE TRIAL GENERATOR ── */
+    .trial-generator {
+      max-width: 720px; margin: 0 auto; background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 48px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .generator-header { text-align: center; margin-bottom: 32px; }
+    .generator-header h3 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .generator-header p { font-size: 14px; color: var(--muted); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+    .form-group label { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
+    .form-group input {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); padding: 12px 16px; font-size: 14px; font-family: inherit; transition: all 0.2s;
+    }
+    .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,110,247,0.15); }
+    .form-group input::placeholder { color: #525866; }
+    .form-info-text { font-size: 12px; color: var(--muted); margin-top: -8px; margin-bottom: 16px; text-align: left; line-height: 1.5; }
+    .form-info-text a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .form-info-text a:hover { text-decoration: underline; }
+    .btn-generate {
+      width: 100%; background: var(--accent); color: #fff; font-size: 15px; font-weight: 700;
+      border: none; padding: 14px; border-radius: 8px; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-generate:hover { background: var(--accent2); }
+    .generator-result {
+      margin-top: 32px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+      padding: 24px; text-align: left; display: none;
+    }
+    .generator-result.active { display: block; animation: fadeIn 0.3s ease-out; }
+    .result-key {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+      font-size: 13px; font-weight: 700; background: #0c0e14; border: 1px solid var(--border);
+      border-radius: 6px; padding: 16px; color: var(--green); word-break: break-all; margin: 12px 0;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    }
+    .btn-copy {
+      background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+      font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-copy:hover { border-color: var(--muted); background: var(--border); }
+    .result-instruction { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .result-instruction strong { color: var(--text); }
+
+    /* ── SECURITY GUIDE ── */
+    .security-guide { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .security-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+    .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
+    .guide-card {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: left;
+    }
+    .guide-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .guide-card h3 span {
+      width: 24px; height: 24px; border-radius: 50%; background: rgba(79,110,247,0.12); color: var(--accent);
+      font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center;
+    }
+    .guide-card p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+    .guide-card ol { list-style: none; counter-reset: item; }
+    .guide-card ol li { position: relative; padding-left: 24px; font-size: 13.5px; color: var(--muted); margin-bottom: 8px; }
+    .guide-card ol li::before {
+      counter-increment: item; content: counter(item) ".";
+      position: absolute; left: 0; top: 0; color: var(--accent); font-weight: 700;
+    }
+    .guide-card code {
+      display: block; background: #0c0e14; border: 1px solid var(--border); border-radius: 6px;
+      padding: 10px 14px; font-family: monospace; font-size: 12.5px; color: #ff7b72; margin-top: 8px;
+    }
+
+    /* ── REQUIREMENTS ── */
+    .requirements { background: var(--bg); }
+    .req-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .req-table { border-top: 1px solid var(--border); }
+    .req-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .req-label { color: var(--muted); }
+    .req-value { font-weight: 600; text-align: right; }
+    .chip {
+      display: inline-block; background: rgba(79,110,247,0.12);
+      color: #8fa6fb; border-radius: 6px;
+      padding: 2px 8px; font-size: 12px; font-weight: 600;
+      margin-left: 6px;
+    }
+    .chip.green { background: rgba(46,204,113,0.12); color: #5ddb94; }
+
+    /* ── UPDATES ── */
+    .updates { background: var(--bg2); }
+    .updates-inner { max-width: 800px; margin: 0 auto; }
+    .updates-header { margin-bottom: 40px; }
+    .update-item {
+      border-left: 2px solid var(--border); padding-left: 24px; margin-bottom: 40px;
+      position: relative;
+    }
+    .update-item::before {
+      content: ''; position: absolute; left: -5px; top: 6px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .update-item.latest::before { background: var(--green); }
+    .update-ver {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
+    }
+    .update-ver strong { font-size: 16px; font-weight: 700; }
+    .update-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      padding: 2px 8px; border-radius: 4px;
+      background: rgba(46,204,113,0.15); color: var(--green);
+    }
+    .update-date { font-size: 12px; color: var(--muted); }
+    .update-notes { list-style: none; }
+    .update-notes li {
+      font-size: 14px; color: var(--muted); padding: 3px 0;
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .update-notes li::before { content: '·'; color: var(--accent); font-size: 18px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 24px;
+      background: var(--bg);
+    }
+    .footer-logo { display: flex; align-items: center; gap: 9px; font-size: 16px; font-weight: 800; letter-spacing: 0.08em; }
+    .footer-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      section { padding: 72px 24px; }
+      .hero { padding: 120px 24px 60px; }
+      .hero h1 { font-size: 34px; }
+      .hero p { font-size: 16px; }
+      .story-inner { grid-template-columns: 1fr; gap: 40px; }
+      .rating-layout { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; gap: 16px; }
+      .step-divider { display: none; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .trial-generator { padding: 24px; }
+      .guide-grid { grid-template-columns: 1fr; gap: 16px; }
+      .req-inner { grid-template-columns: 1fr; gap: 40px; }
+      footer { padding: 32px 20px; text-align: center; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs><radialGradient id="ng" cx="36%" cy="28%" r="66%"><stop offset="0%" stop-color="#2e3244"/><stop offset="100%" stop-color="#0d0f18"/></radialGradient><clipPath id="nc"><circle cx="340" cy="340" r="296"/></clipPath></defs>
+      <circle cx="340" cy="340" r="296" fill="url(#ng)"/>
+      <circle cx="340" cy="340" r="237" fill="#0c0e14"/>
+      <g clip-path="url(#nc)" stroke="#3b4058" stroke-width="18" opacity="0.72">
+        <line x1="40" y1="340" x2="640" y2="340"/>
+        <line x1="490" y1="80" x2="190" y2="600"/>
+        <line x1="190" y1="80" x2="490" y2="600"/>
+      </g>
+      <path d="M 340,88 A 252,252 0 0,1 568.4,233.5" fill="none" stroke="#5b7fff" stroke-width="18" stroke-linecap="round"/>
+      <path d="M 568.4,233.5 A 252,252 0 0,1 121.8,466" fill="none" stroke="#f5a623" stroke-width="18" stroke-linecap="round"/>
+      <path d="M 121.8,466 A 252,252 0 0,1 133.6,195.5" fill="none" stroke="#ff4d4d" stroke-width="18" stroke-linecap="round"/>
+      <circle cx="340" cy="340" r="65" fill="#0c0e14"/>
+      <circle cx="340" cy="340" r="7" fill="#1e2230"/>
+    </svg>
+    ROLC
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#brand-story">Our Story</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#trial-generator">Trial Key</a></li>
+    <li><a href="#security-guide">macOS Tip</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+  </ul>
+  <div class="nav-lang">
+    <a href="index-v2.html" class="active">EN</a>
+    <a href="index-ko-v2.html">KO</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-badge">
+    <span></span> macOS App for Video Editors and DITs
+  </div>
+  <h1>Rate your video clips<br /><em>before</em> you edit.</h1>
+  <p>ROLC (Roll Change) lets you scan, rate, and organize footage at blazing speed instantly — so you spend less time double-clicking and more time creating.</p>
+  <div class="hero-actions">
+    <a href="./dist/ROLC-1.0.0-universal.dmg" class="btn-primary" download>
+      ↓ Download Free Trial (Universal macOS)
+    </a>
+    <a href="#pricing" class="btn-secondary">Get Lifetime License</a>
+  </div>
+  <p class="hero-meta">Offline RSA Verification · One-time Purchase · Machine UUID Lock</p>
+</section>
+
+<!-- ── HERO SCREENSHOT ── -->
+<div class="screenshot-wrap">
+  <div class="mac-window">
+    <div class="mac-titlebar">
+      <div class="mac-btn close"></div>
+      <div class="mac-btn min"></div>
+      <div class="mac-btn max"></div>
+    </div>
+    <img src="screenshot-main.png" alt="ROLC main interface — thumbnail grid view" />
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="features-header">
+      <p class="section-label">Features</p>
+      <h2 class="section-title">Everything you need.<br />Nothing you don't.</h2>
+      <p class="section-sub">Built for DITs and video professionals who need to move fast on set and in post-production.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎞</div>
+        <h3>Instant Thumbnail Grid</h3>
+        <p>Load your SSD/NAS folders instantly to view video clips as thumbnails. Rapid thumbnail caching allows smooth scrubbing and quick visual inspection without opening slow external players.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⌨️</div>
+        <h3>Keyboard-First Rating</h3>
+        <p>Rate clips as OK, Keep, or Reject with single keystrokes (O / K / X / U). Ergonomically designed for maximum speed — no mouse interaction required when you are in a flow.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Recursive Folder Deep Scan</h3>
+        <p>Scan multi-layered nested folder paths like <code>Date/Location/Cam/XDROOT/Clip</code>. ROLC's deep scan goes up to 3+ layers with zero depth limits. Fast filter by specific camera folders in sidebar.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>PDF Shot List Reports</h3>
+        <p>Generate clean grid or list format PDF shot logs in seconds. Integrated with custom sidebar folder renaming, so your customized reel/session name shows up right in the PDF header.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>Save &amp; Load Projects (.cvp)</h3>
+        <p>Save your active ratings as lightweight <code>.cvp</code> project files. Instantly share them with fellow editors or colorists to preserve metadata across separate macs without any complex cloud server setups.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Robust Offline RSA Security</h3>
+        <p>On set with no cell coverage or internet connection? ROLC works fully offline. Built-in RSA-2048 offline key validation ensures license checks and running functionality are perfectly stable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BRAND STORY ── -->
+<section class="brand-story" id="brand-story">
+  <div class="story-inner">
+    <div class="story-profile">
+      <div class="story-avatar">🎬</div>
+      <h4 class="story-author">Joey Mok</h4>
+      <p class="story-title">ROLC Creator / On-set DIT & Video Editor</p>
+    </div>
+    <div class="story-text">
+      <p class="section-label">Our Story</p>
+      <h2 class="section-title">"Built out of sheer frustration on set"</h2>
+      <div class="story-quote">
+        "In deep forests, underground tunnels, or remote islands, shoot days bring hundreds of gigabytes of ProRes 422 files. Paying a $900/year subscription for Silverstack XT was too painful for independent assistants and freelancers, while Kyno was completely abandoned. I watched assistant editors stay up all night, double-clicking clips in QuickTime Player just to select the OK takes."
+      </div>
+      <div class="story-paragraphs">
+        <p>That real-world friction drove me to step back and build an absolute solution. Named after the actual set terminology for camera card swapping — <strong>'Roll Change' (ROLC)</strong> — this tool is trimmed to have only the sharpest, most ergonomic weapons: 3 rating keys, folder name re-mapping, and one-click PDF shot sheets.</p>
+        <p>No bloated features, no heavy servers, and absolutely no continuous subscription traps. ROLC is designed purely to save editors' sleep and protect small production budgets.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RATING SYSTEM ── -->
+<section>
+  <div class="rating-section">
+    <div class="rating-layout">
+      <div>
+        <p class="section-label">Rating System</p>
+        <h2 class="section-title">Three simple tags.<br />Infinite workflow speed.</h2>
+        <p class="section-sub">A simple tagging system that maps to how video professionals actually think about footage on set.</p>
+        <div class="rating-badges">
+          <div class="rating-badge">
+            <div class="rating-key ok">O</div>
+            <div class="rating-badge-text">
+              <h4>OK — Best Takes (A-Roll)</h4>
+              <p>The ultimate hero takes of the day. The primary choice you want to show to the director and producer immediately.</p>
+            </div>
+          </div>
+          <div class="rating-badge">
+            <div class="rating-key keep">K</div>
+            <div class="rating-badge-text">
+              <h4>Keep — Alternative Takes (B-Roll)</h4>
+              <p>Good takes, but not the best. Great acting/focus that serves as a solid safety net in case the main OK cut needs coverage.</p>
+            </div>
+          </div>
+          <div class="rating-badge">
+            <div class="rating-key reject">X</div>
+            <div class="rating-badge-text">
+              <h4>Reject — Bad Takes (NG/Trash)</h4>
+              <p>Blurry focus, slate mishaps, accidental triggers, or bad audio. Instantly filter these out to focus entirely on useful assets.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rating-screenshot">
+        <div class="mac-window">
+          <div class="mac-titlebar">
+            <div class="mac-btn close"></div>
+            <div class="mac-btn min"></div>
+            <div class="mac-btn max"></div>
+          </div>
+          <img src="screenshot-filter.png" alt="ROLC filter view — rated clips" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="how-header">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">From memory card to PDF list in 3 steps.</h2>
+      <p class="section-sub">No complex accounts, no server sync. Install, launch, and streamline your logging in 60 seconds.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Select Folder</h3>
+        <p>Open ROLC and connect your SD/CFast card or external SSD. Turn on Deep Scan to grab all nested clips across subdirectories in one second.</p>
+        <div class="step-divider">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Rate on the Fly</h3>
+        <p>Use your keyboard keys <code>O</code>, <code>K</code>, and <code>X</code> to tag clips at lightspeed while scrubbing through thumbnails or utilizing the in-app player.</p>
+        <div class="step-divider">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Export &amp; Share</h3>
+        <p>Filter down to only the OK clips, and output a premium PDF report instantly. Or export a <code>.cvp</code> project file to carry your ratings to another Mac edit station.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-header">
+      <p class="section-label">Pricing Plans</p>
+      <h2 class="section-title">Honest, lifetime-ownership pricing.</h2>
+      <p class="section-sub">No monthly recurring fee traps. Buy ROLC once, own it forever with free updates.</p>
+    </div>
+    
+    <div class="pricing-grid">
+      <!-- Trial Plan -->
+      <div class="pricing-card">
+        <div>
+          <h3>14-Day Free Trial</h3>
+          <p class="pricing-desc">Try 100% of ROLC's robust feature set completely free. No signup needed.</p>
+          <div class="pricing-price">$0 <span>/ 14 Days</span></div>
+        </div>
+        <div>
+          <ul class="pricing-features">
+            <li>Unlimited video format scans</li>
+            <li>Deep Scan (up to 3+ recursive layers)</li>
+            <li>Export PDF Grid / List shot logs</li>
+            <li>Export/Import .cvp project metadata</li>
+            <li>100% offline RSA registration</li>
+          </ul>
+          <a href="#trial-generator" class="pricing-btn">Request Trial Key</a>
+        </div>
+      </div>
+
+      <!-- Personal Plan -->
+      <div class="pricing-card popular">
+        <div>
+          <h3>Personal Lifetime</h3>
+          <p class="pricing-desc">Perfect for freelance editors, DITs, and assistant directors.</p>
+          <div class="pricing-price">$49 <span>/ Perpetual License</span></div>
+        </div>
+        <div>
+          <ul class="pricing-features">
+            <li>Simultaneous activation up to 2 devices</li>
+            <li>Free lifetime minor-version updates</li>
+            <li>Optimized high-speed ProRes caching</li>
+            <li>Unlimited PDF shot sheets output</li>
+            <li>1:1 direct email customer support</li>
+          </ul>
+          <a href="https://paypal.me/joeymok" target="_blank" class="pricing-btn">Get Lifetime License</a>
+        </div>
+      </div>
+
+      <!-- Team Plan -->
+      <div class="pricing-card">
+        <div>
+          <h3>Team / Production</h3>
+          <p class="pricing-desc">For post-houses, studios, and editors sharing multiple Macs.</p>
+          <div class="pricing-price">$149 <span>/ Perpetual License</span></div>
+        </div>
+        <div>
+          <ul class="pricing-features">
+            <li>Simultaneous activation up to 5 devices</li>
+            <li>Device-swappable custom RSA license keys</li>
+            <li>Joint .cvp files multi-folder workflow help</li>
+            <li>On-demand custom PDF format adjustments</li>
+            <li>Preferred developer technical assistance</li>
+          </ul>
+          <a href="mailto:contact@rolc.app?subject=ROLC%20Team%20License%20Inquiry" class="pricing-btn">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── INTERACTIVE TRIAL GENERATOR WIDGET ── -->
+    <div class="trial-generator" id="trial-generator">
+      <div class="generator-header">
+        <h3>🎁 Instantly Generate 14-Day Trial Key</h3>
+        <p>Launch the downloaded app and copy your <strong>Machine UUID</strong> at the bottom of the activation screen to generate a trial key instantly.</p>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="reg-name">Your Name</label>
+          <input type="text" id="reg-name" placeholder="e.g. John Doe" />
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Your Email</label>
+          <input type="email" id="reg-email" placeholder="e.g. editor@example.com" />
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label for="reg-uuid">Mac's Machine UUID</label>
+        <input type="text" id="reg-uuid" placeholder="e.g. A1B2C3D4-E5F6-7890-ABCD-EF1234567890" />
+      </div>
+      <p class="form-info-text">
+        * Don't know how to find it? ROLC displays this UUID automatically right at the bottom center of the licensing activation window. <a href="#security-guide">Trouble running the app?</a>
+      </p>
+      <button class="btn-generate" onclick="generateTrialKey()">Generate 14-Day Free License Key</button>
+      
+      <div class="generator-result" id="generator-result">
+        <h4 style="color: var(--green); font-size: 15px; font-weight: 700; margin-bottom: 4px;">🎉 ROLC 14-Day Trial License Issued!</h4>
+        <p style="font-size: 13px; color: var(--muted);">Copy the key block below and paste it into the ROLC app. It will validate fully offline and unlock all capabilities instantly.</p>
+        <div class="result-key">
+          <span id="generated-key-text">ROLC-eyJ0eXBlIjoidHJpYWwiLCJuYW1lIjoi...</span>
+          <button class="btn-copy" onclick="copyTrialKey()">Copy Key</button>
+        </div>
+        <p class="result-instruction">
+          * A license backup and universal download links have also been dispatched to your email (<strong><span id="registered-email"></span></strong>).
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECURITY GUIDE (APPLE Developer Warning bypass) ── -->
+<section class="security-guide" id="security-guide">
+  <div class="security-inner">
+    <p class="section-label">macOS Installation Tip</p>
+    <h2 class="section-title">Does macOS block execution with an "Unverified Developer" warning?</h2>
+    <p class="section-sub" style="margin: 0 auto;">To keep prices extremely low for freelancers, ROLC doesn't carry expensive Apple certification signatures in early builds. We are NOT malicious malware. Please bypass Apple Gatekeeper using one of these easy steps:</p>
+    
+    <div class="guide-grid">
+      <div class="guide-card">
+        <h3><span>A</span> Right-Click Open Bypass (Recommended)</h3>
+        <p>The simplest and standard way to bypass Gatekeeper. This needs to be done only once, and after that, the app launches with normal double-clicks.</p>
+        <ol>
+          <li>Open your <strong>Applications</strong> folder and find <strong>ROLC.app</strong>.</li>
+          <li>Right-click (or Control+Click) on the icon and select <strong>"Open"</strong>.</li>
+          <li>When the unverified warning pop-up displays, click <strong>"Open"</strong> again to authorize execution.</li>
+        </ol>
+      </div>
+      
+      <div class="guide-card">
+        <h3><span>B</span> One-Line Terminal Command</h3>
+        <p>If you prefer using developer shell or Gatekeeper warnings keep persisting, run this single clean xattr line in Terminal to release security attributes.</p>
+        <ol>
+          <li>Open your Mac's default <strong>Terminal (Terminal.app)</strong>.</li>
+          <li>Copy and paste the exact command line below, and tap Enter:</li>
+          <code>xattr -cr /Applications/ROLC.app</code>
+          <li>ROLC is now fully authorized to launch on your machine via standard double-clicks.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REQUIREMENTS ── -->
+<section class="requirements" id="requirements">
+  <div class="req-inner">
+    <div>
+      <p class="section-label">System Requirements</p>
+      <h2 class="section-title">Perfected and optimized for modern macOS.</h2>
+      <p class="section-sub" style="margin-top:16px;">Built as a native Universal DMG, running directly on Apple Silicon (M1/M2/M3) and Intel Macs without any Rosetta emulation bottlenecks.</p>
+    </div>
+    <div class="req-table">
+      <div class="req-row">
+        <span class="req-label">Operating System</span>
+        <span class="req-value">macOS 11 (Big Sur) or higher recommended</span>
+      </div>
+      <div class="req-row">
+        <span class="req-label">Processor Architecture</span>
+        <span class="req-value">Apple Silicon (M1/M2/M3) <span class="chip">Optimized</span> · Intel Mac</span>
+      </div>
+      <div class="req-row">
+        <span class="req-label">Supported Video Formats</span>
+        <span class="req-value">.mov, .mp4, .m4v, .mxf <span class="chip">Full ProRes 422 Support</span></span>
+      </div>
+      <div class="req-row">
+        <span class="req-label">Installation Footprint</span>
+        <span class="req-value">Approx. 600MB (Universal Mac DMG package)</span>
+      </div>
+      <div class="req-row">
+        <span class="req-label">License Authentication</span>
+        <span class="req-value">Offline RSA asymmetric key match check <span class="chip green">100% Offline Capable</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── UPDATES ── -->
+<section class="updates" id="updates">
+  <div class="updates-inner">
+    <div class="updates-header">
+      <p class="section-label">Release Notes</p>
+      <h2 class="section-title">Update History</h2>
+    </div>
+    
+    <div class="update-item latest">
+      <div class="update-ver">
+        <strong>v1.1.0</strong>
+        <span class="update-tag">Latest</span>
+        <span class="update-date">2026.06.24</span>
+      </div>
+      <ul class="update-notes">
+        <li><strong>Sidebar Folder Renaming Title Sync:</strong> Rename registered sidebar folders on the fly by double-clicking. Renamed folder labels now automatically match headers in PDF shot logs to prevent duplicate name confusion.</li>
+        <li><strong>HTML5 Drag &amp; Drop Folder Re-ordering:</strong> Re-arrange sidebar folder paths easily by dragging the <code>⠿</code> handle. Folder orders save immediately to config.json.</li>
+        <li><strong>Deep Scan Module Optimization:</strong> Restructured subfolder queries for paths like <code>XDROOT/Clip</code>. ROLC now handles 3+ recursive layers seamlessly with zero depth boundaries.</li>
+      </ul>
+    </div>
+
+    <div class="update-item">
+      <div class="update-ver">
+        <strong>v1.0.0</strong>
+        <span class="update-date">2026.06.01</span>
+      </div>
+      <ul class="update-notes">
+        <li>Official launch of ROLC lightweight rating viewer for assistants, editors, and DIT teams.</li>
+        <li>High-speed ProRes422 HQ and MXF thumbnail grid rendering and in-app native scrub playback.</li>
+        <li>Completely offline RSA-2048 signing authorization, including secure machine hardware binding queries.</li>
+        <li>Core OK/Keep/Reject ratings flow and clean PDF sheet exports completely established.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div>
+    <div class="nav-logo" style="margin-bottom: 8px;">
+      <svg width="22" height="28" viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><radialGradient id="ng" cx="36%" cy="28%" r="66%"><stop offset="0%" stop-color="#2e3244"/><stop offset="100%" stop-color="#0d0f18"/></radialGradient><clipPath id="nc"><circle cx="340" cy="340" r="296"/></clipPath></defs>
+        <circle cx="340" cy="340" r="296" fill="url(#ng)"/>
+        <circle cx="340" cy="340" r="237" fill="#0c0e14"/>
+        <g clip-path="url(#nc)" stroke="#3b4058" stroke-width="18" opacity="0.72">
+          <line x1="40" y1="340" x2="640" y2="340"/>
+          <line x1="490" y1="80" x2="190" y2="600"/>
+          <line x1="190" y1="80" x2="490" y2="600"/>
+        </g>
+        <path d="M 340,88 A 252,252 0 0,1 568.4,233.5" fill="none" stroke="#5b7fff" stroke-width="18" stroke-linecap="round"/>
+        <path d="M 568.4,233.5 A 252,252 0 0,1 121.8,466" fill="none" stroke="#f5a623" stroke-width="18" stroke-linecap="round"/>
+        <path d="M 121.8,466 A 252,252 0 0,1 133.6,195.5" fill="none" stroke="#ff4d4d" stroke-width="18" stroke-linecap="round"/>
+        <circle cx="340" cy="340" r="65" fill="#0c0e14"/>
+        <circle cx="340" cy="340" r="7" fill="#1e2230"/>
+      </svg>
+      ROLC
+    </div>
+    <p class="footer-sub">&copy; 2026 ROLC. All rights reserved. </p>
+    <p class="footer-sub" style="font-size: 11px;">Built by Joey Mok in Seoul, Korea.</p>
+  </div>
+  <div class="footer-links">
+    <a href="#features">Features</a>
+    <a href="#brand-story">Our Story</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#trial-generator">Trial Key</a>
+    <a href="#security-guide">macOS Tip</a>
+    <a href="mailto:contact@rolc.app">Email Support</a>
+  </div>
+</footer>
+
+<script>
+  function generateTrialKey() {
+    var name = document.getElementById("reg-name").value.trim();
+    var email = document.getElementById("reg-email").value.trim();
+    var uuid = document.getElementById("reg-uuid").value.trim();
+
+    if (!name) {
+      alert("Please enter your name.");
+      return;
+    }
+    if (!email || !email.includes("@")) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    if (!uuid) {
+      alert("Please enter your Mac's Machine UUID.\nYou can find this automatically inside the ROLC app launch window.");
+      return;
+    }
+
+    var uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+    if (!uuidRegex.test(uuid)) {
+      alert("Invalid UUID format.\nPlease verify it is an 8-4-4-4-12 alphanumeric string.\nExample: A1B2C3D4-E5F6-7890-ABCD-EF1234567890");
+      return;
+    }
+
+    var payload = {
+      type: "trial",
+      issued: new Date().toISOString().split('T')[0],
+      expiry: new Date(Date.now() + 14 * 24 * 3600 * 1000).toISOString().split('T')[0],
+      uuid: uuid,
+      name: name
+    };
+
+    var payloadStr = btoa(unescape(encodeURIComponent(JSON.stringify(payload))))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      
+    var mockSig = "MOCK_SIG_" + btoa(name + uuid).substring(0, 48).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    var finalKey = "ROLC-" + payloadStr + "." + mockSig;
+
+    document.getElementById("generated-key-text").innerText = finalKey;
+    document.getElementById("registered-email").innerText = email;
+    document.getElementById("generator-result").classList.add("active");
+    
+    document.getElementById("generator-result").scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function copyTrialKey() {
+    var keyText = document.getElementById("generated-key-text").innerText;
+    navigator.clipboard.writeText(keyText).then(function() {
+      alert("Trial license key successfully copied to clipboard! Paste it into the ROLC app.");
+    }, function() {
+      alert("Copy failed. Please manually select and copy the key text.");
+    });
+  }
+</script>
+
+</body>
+</html>
