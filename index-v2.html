@@ -7,24 +7,25 @@
   <meta name="description" content="Quickly scan, rate, and organize video clips into professional shot lists before you edit. Built by on-set DIT and editors, designed for rapid offline workflow on macOS." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0d0e11;
-      --bg2:       #13151a;
-      --bg3:       #1a1d24;
-      --border:    #2a2d36;
-      --text:      #e8eaf0;
-      --muted:     #7c8494;
-      --accent:    #4f6ef7;
-      --accent2:   #3a56d4;
-      --green:     #2ecc71;
-      --ok:        #4f6ef7;
-      --keep:      #f5a623;
-      --reject:    #e74c3c;
-      --radius:    12px;
+      --bg:        #000000;
+      --bg2:       #0a0b0d;
+      --bg3:       #121316;
+      --border:    #1c1d22;
+      --border-focus: #3a3d46;
+      --text:      #f5f5f7;
+      --muted:     #8686b0;
+      --accent:    #5b7fff;
+      --accent2:   #3d5bc0;
+      --green:     #30d158;
+      --ok:        #5b7fff;
+      --keep:      #ff9f0a;
+      --reject:    #ff453a;
+      --radius:    8px;
     }
 
     html { scroll-behavior: smooth; }
@@ -32,120 +33,106 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
       font-size: 16px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── NAV ── */
+    /* ── NAV (Apple Style Blur) ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px;
-      height: 60px;
-      background: rgba(13,14,17,0.85);
-      backdrop-filter: blur(16px);
+      padding: 0 80px;
+      height: 52px;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: saturate(180%) blur(20px);
       border-bottom: 1px solid var(--border);
     }
     .nav-logo {
-      display: flex; align-items: center; gap: 9px;
-      font-size: 18px; font-weight: 800; letter-spacing: 0.08em;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 800; letter-spacing: 0.1em;
       color: var(--text); text-decoration: none;
     }
-    .nav-logo svg { flex-shrink: 0; }
-    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a {
-      color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500;
+      color: #a1a1a6; text-decoration: none; font-size: 12px; font-weight: 500;
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      background: var(--accent); color: #fff;
-      padding: 8px 16px; border-radius: 8px;
-      text-decoration: none; font-size: 13px; font-weight: 600;
-      transition: background 0.2s;
-    }
-    .nav-cta:hover { background: var(--accent2); }
-    .nav-lang {
-      display: flex; align-items: center; gap: 8px; margin-right: 12px;
-    }
+    .nav-lang { display: flex; align-items: center; gap: 8px; }
     .nav-lang a {
-      font-size: 12px; font-weight: 600; color: var(--muted);
-      text-decoration: none; padding: 3px 8px; border-radius: 4px;
-      border: 1px solid transparent; transition: all 0.2s;
+      font-size: 11px; font-weight: 600; color: #a1a1a6;
+      text-decoration: none; padding: 2px 6px; border-radius: 4px;
+      transition: all 0.2s;
     }
     .nav-lang a:hover { color: var(--text); }
-    .nav-lang a.active {
-      color: var(--text); border-color: var(--border);
-      background: var(--bg3);
-    }
+    .nav-lang a.active { color: var(--text); background: rgba(255,255,255,0.1); }
 
     /* ── HERO ── */
     .hero {
-      padding: 140px 48px 80px;
+      padding: 160px 48px 80px;
       text-align: center;
-      max-width: 880px; margin: 0 auto;
+      max-width: 980px; margin: 0 auto;
     }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(79,110,247,0.12); border: 1px solid rgba(79,110,247,0.3);
+      background: rgba(91,127,255,0.08); border: 1px solid rgba(91,127,255,0.25);
       color: #8fa6fb; border-radius: 100px;
-      padding: 4px 14px; font-size: 13px; font-weight: 500;
-      margin-bottom: 28px;
+      padding: 4px 14px; font-size: 12px; font-weight: 600;
+      margin-bottom: 32px; letter-spacing: 0.02em;
     }
-    .hero-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; display: inline-block; }
+    .hero-badge span { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; display: inline-block; }
     .hero h1 {
-      font-size: clamp(34px, 5vw, 60px); font-weight: 900;
-      line-height: 1.15; letter-spacing: -0.02em;
-      margin-bottom: 24px;
+      font-size: clamp(34px, 5vw, 60px); font-weight: 800;
+      line-height: 1.15; letter-spacing: -0.03em;
+      margin-bottom: 28px;
     }
     .hero h1 em { font-style: normal; color: var(--accent); }
     .hero p {
-      font-size: 19px; color: var(--muted); line-height: 1.75;
-      max-width: 680px; margin: 0 auto 40px;
+      font-size: 20px; color: #a1a1a6; line-height: 1.68;
+      max-width: 720px; margin: 0 auto 48px; font-weight: 400;
     }
     .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
     .btn-primary {
       background: var(--accent); color: #fff;
-      padding: 14px 32px; border-radius: 10px;
-      text-decoration: none; font-size: 16px; font-weight: 700;
-      transition: background 0.2s, transform 0.15s;
-      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 6px;
+      text-decoration: none; font-size: 14px; font-weight: 600;
+      transition: background 0.2s, transform 0.1s;
     }
-    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-primary:hover { background: var(--accent2); }
     .btn-secondary {
-      background: var(--bg3); color: var(--text);
-      border: 1px solid var(--border);
-      padding: 14px 32px; border-radius: 10px;
-      text-decoration: none; font-size: 16px; font-weight: 600;
-      transition: border-color 0.2s, transform 0.15s;
+      background: transparent; color: var(--accent);
+      border: 1px solid transparent;
+      padding: 12px 28px; border-radius: 6px;
+      text-decoration: none; font-size: 14px; font-weight: 600;
+      transition: all 0.2s;
     }
-    .btn-secondary:hover { border-color: var(--muted); transform: translateY(-1px); }
+    .btn-secondary:hover { color: #fff; text-decoration: underline; }
     .hero-meta {
-      margin-top: 20px; font-size: 13px; color: var(--muted);
+      margin-top: 24px; font-size: 12px; color: #6e6e73; letter-spacing: 0.02em;
     }
 
     /* ── SCREENSHOT ── */
     .screenshot-wrap {
-      max-width: 1100px; margin: 0 auto; padding: 0 24px 80px;
+      max-width: 1200px; margin: 0 auto; padding: 0 48px 120px;
     }
     .mac-window {
-      background: var(--bg3); border-radius: 14px;
+      background: #000; border-radius: 10px;
       border: 1px solid var(--border);
       overflow: hidden;
-      box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+      box-shadow: 0 30px 100px rgba(0,0,0,0.8);
     }
     .mac-titlebar {
-      background: #1e2028; height: 38px;
-      display: flex; align-items: center; padding: 0 16px; gap: 8px;
+      background: #111215; height: 32px;
+      display: flex; align-items: center; padding: 0 12px; gap: 6px;
       border-bottom: 1px solid var(--border);
     }
-    .mac-btn { width: 12px; height: 12px; border-radius: 50%; }
-    .mac-btn.close  { background: #ff5f57; }
-    .mac-btn.min    { background: #febc2e; }
-    .mac-btn.max    { background: #28c840; }
-    .mac-window img { width: 100%; display: block; }
+    .mac-btn { width: 10px; height: 10px; border-radius: 50%; }
+    .mac-btn.close  { background: #ff5f56; opacity: 0.8; }
+    .mac-btn.min    { background: #ffbd2e; opacity: 0.8; }
+    .mac-btn.max    { background: #27c93f; opacity: 0.8; }
+    .mac-window img { width: 100%; display: block; filter: saturate(105%); }
 
     /* ── SECTION COMMON ── */
     section { padding: 96px 48px; }
@@ -163,79 +150,51 @@
       font-size: 17px; color: var(--muted); max-width: 540px; line-height: 1.75;
     }
 
-    /* ── FEATURES ── */
-    .features { background: var(--bg2); }
-    .features-inner { max-width: 1100px; margin: 0 auto; }
-    .features-header { text-align: center; margin-bottom: 64px; }
-    .features-header .section-sub { margin: 0 auto; }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
+    /* ── CORE 3 PILLARS ── */
+    .pillars { background: var(--bg); border-top: 1px solid var(--border); }
+    .pillar-row {
+      max-width: 1140px; margin: 0 auto 120px;
+      display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px;
+      align-items: center;
     }
-    .feature-card {
+    .pillar-row:last-child { margin-bottom: 0; }
+    .pillar-row.reverse { grid-template-columns: 1fr 1.1fr; }
+    .pillar-text { padding: 0 20px; }
+    .pillar-num { font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 12px; }
+    .pillar-title { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .pillar-desc { font-size: 15px; color: #a1a1a6; line-height: 1.75; margin-bottom: 24px; }
+    .pillar-visual { position: relative; }
+    .pillar-card {
       background: var(--bg3); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 28px;
-      transition: border-color 0.2s, transform 0.2s;
+      border-radius: 8px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
-    .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .feature-icon {
-      width: 48px; height: 48px; border-radius: 12px;
-      background: rgba(79,110,247,0.12);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; margin-bottom: 16px;
-    }
-    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-    .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .pillar-bullet { list-style: none; margin-top: 16px; }
+    .pillar-bullet li { font-size: 14px; color: #a1a1a6; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .pillar-bullet li::before { content: '•'; color: var(--accent); font-weight: bold; }
 
-    /* ── BRAND STORY ── */
-    .brand-story { background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .story-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: center; }
-    .story-profile { text-align: center; }
+    /* ── DEV STORY ── */
+    .brand-story {
+      background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 160px 80px;
+    }
+    .story-inner { max-width: 900px; margin: 0 auto; text-align: center; }
     .story-avatar {
-      width: 120px; height: 120px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), #7b9cff);
-      margin: 0 auto 24px; display: flex; align-items: center; justify-content: center;
-      font-size: 48px; border: 4px solid var(--border);
+      font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 16px;
     }
-    .story-author { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
-    .story-title { font-size: 13px; color: var(--accent); font-weight: 600; letter-spacing: 0.05em; }
     .story-quote {
-      font-size: 19px; font-weight: 700; line-height: 1.45; color: var(--text);
-      margin-bottom: 24px; position: relative; border-left: 4px solid var(--accent); padding-left: 16px;
+      font-size: 20px; font-weight: 500; line-height: 1.7; color: #f5f5f7;
+      margin-bottom: 40px; padding: 0 20px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
-    .story-paragraphs p { font-size: 15px; color: var(--muted); margin-bottom: 16px; line-height: 1.8; }
-
-    /* ── RATING DEMO ── */
-    .rating-section { max-width: 1100px; margin: 0 auto; }
-    .rating-layout {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
-    }
-    .rating-badges { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
-    .rating-badge {
-      display: flex; align-items: center; gap: 16px;
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 10px; padding: 16px 20px;
-    }
-    .rating-key {
-      width: 36px; height: 36px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 800; flex-shrink: 0;
-    }
-    .rating-key.ok     { background: rgba(79,110,247,0.2); color: var(--ok); border: 1px solid rgba(79,110,247,0.4); }
-    .rating-key.keep   { background: rgba(245,166,35,0.15); color: var(--keep); border: 1px solid rgba(245,166,35,0.3); }
-    .rating-key.reject { background: rgba(231,76,60,0.15); color: var(--reject); border: 1px solid rgba(231,76,60,0.3); }
-    .rating-badge-text h4 { font-size: 15px; font-weight: 700; }
-    .rating-badge-text p  { font-size: 13px; color: var(--muted); }
-    .rating-screenshot { position: relative; }
+    .story-author { font-size: 14px; font-weight: 700; color: #f5f5f7; margin-bottom: 4px; }
+    .story-title { font-size: 12px; color: #8686b0; }
 
     /* ── HOW IT WORKS ── */
-    .how { background: var(--bg2); }
-    .how-inner { max-width: 1100px; margin: 0 auto; }
-    .how-header { text-align: center; margin-bottom: 64px; }
+    .how { background: var(--bg); padding: 140px 80px; }
+    .how-inner { max-width: 1140px; margin: 0 auto; }
+    .how-header { text-align: center; margin-bottom: 80px; }
     .how-header .section-sub { margin: 0 auto; }
-    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; }
-    .step { position: relative; text-align: center; padding: 32px 24px; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .step { text-align: left; background: var(--bg2); border: 1px solid var(--border); padding: 40px 32px; border-radius: 6px; }
     .step-num {
       width: 52px; height: 52px; border-radius: 50%;
       border: 2px solid var(--accent);
@@ -262,174 +221,111 @@
     }
     .pricing-card {
       background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 20px; padding: 48px 36px;
-      position: relative; overflow: hidden; display: flex;
-      flex-direction: column; justify-content: space-between;
-      transition: all 0.3s;
+      border-radius: 6px; padding: 48px 36px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: all 0.2s;
     }
     .pricing-card.popular {
       border-color: var(--accent);
-      box-shadow: 0 10px 30px rgba(79,110,247,0.15);
+      box-shadow: 0 15px 40px rgba(91,127,255,0.08);
     }
-    .pricing-card.popular::before {
-      content: 'Popular'; position: absolute; top: 16px; right: 16px;
-      background: var(--accent); color: #fff; font-size: 11px; font-weight: 700;
-      padding: 4px 12px; border-radius: 100px; text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .pricing-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
-    .pricing-card .pricing-desc { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
-    .pricing-price { font-size: 40px; font-weight: 900; margin-bottom: 24px; display: flex; align-items: baseline; }
-    .pricing-price span { font-size: 14px; color: var(--muted); font-weight: 500; margin-left: 6px; }
+    .pricing-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+    .pricing-card .pricing-desc { font-size: 13.5px; color: #a1a1a6; margin-bottom: 28px; line-height: 1.5; }
+    .pricing-price { font-size: 36px; font-weight: 800; margin-bottom: 4px; color: #fff; }
+    .pricing-sub { color: #6e6e73; font-size: 13px; margin-bottom: 32px; }
     .pricing-features { list-style: none; margin-bottom: 36px; border-top: 1px solid var(--border); padding-top: 24px; }
-    .pricing-features li { font-size: 14px; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .pricing-features li { font-size: 13.5px; color: #a1a1a6; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .pricing-features li::before { content: '✓'; color: var(--green); font-weight: 700; }
     .pricing-btn {
-      display: block; text-align: center; background: var(--bg); border: 1px solid var(--border);
-      color: var(--text); padding: 12px 24px; border-radius: 8px; text-decoration: none;
-      font-size: 14px; font-weight: 700; transition: all 0.2s;
+      display: block; text-align: center; background: transparent; border: 1px solid var(--border);
+      color: #fff; padding: 12px 24px; border-radius: 4px; text-decoration: none;
+      font-size: 13.5px; font-weight: 600; transition: all 0.2s;
     }
-    .pricing-btn:hover { border-color: var(--muted); background: var(--border); }
+    .pricing-btn:hover { border-color: #a1a1a6; background: rgba(255,255,255,0.05); }
     .pricing-card.popular .pricing-btn {
-      background: var(--accent); border-color: var(--accent); color: #fff;
+      background: var(--accent); border-color: var(--accent);
     }
     .pricing-card.popular .pricing-btn:hover { background: var(--accent2); border-color: var(--accent2); }
 
-    /* ── INTERACTIVE LICENSE REQUEST WIDGET ── */
+    /* ── LICENSE REQUEST FORM ── */
     .trial-generator {
-      max-width: 720px; margin: 0 auto; background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 20px; padding: 48px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+      max-width: 680px; margin: 0 auto; background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 6px; padding: 48px;
     }
     .generator-header { text-align: center; margin-bottom: 32px; }
-    .generator-header h3 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
-    .generator-header p { font-size: 14px; color: var(--muted); }
+    .generator-header h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .generator-header p { font-size: 13.5px; color: #a1a1a6; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 8px; text-align: left; }
-    .form-group label { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
+    .form-group label { font-size: 11px; font-weight: 700; color: #8686b0; letter-spacing: 0.05em; text-transform: uppercase; }
     .form-group input {
-      background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
-      color: var(--text); padding: 12px 16px; font-size: 14px; font-family: inherit; transition: all 0.2s;
+      background: #000; border: 1px solid var(--border); border-radius: 4px;
+      color: var(--text); padding: 12px 14px; font-size: 13.5px; font-family: inherit; transition: all 0.2s;
     }
-    .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,110,247,0.15); }
-    .form-group input::placeholder { color: #525866; }
-    .form-info-text { font-size: 12px; color: var(--muted); margin-top: -8px; margin-bottom: 16px; text-align: left; line-height: 1.5; }
-    .form-info-text a { color: var(--accent); text-decoration: none; font-weight: 500; }
-    .form-info-text a:hover { text-decoration: underline; }
+    .form-group input:focus { outline: none; border-color: var(--accent); }
+    .form-group input::placeholder { color: #424248; }
+    .form-info-text { font-size: 12px; color: #6e6e73; margin-top: -8px; margin-bottom: 20px; text-align: left; }
+    .form-info-text a { color: var(--accent); text-decoration: none; }
     .btn-generate {
-      width: 100%; background: var(--accent); color: #fff; font-size: 15px; font-weight: 700;
+      width: 100%; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600;
       border: none; padding: 14px; border-radius: 8px; cursor: pointer; transition: background 0.2s;
     }
     .btn-generate:hover { background: var(--accent2); }
     .generator-result {
-      margin-top: 32px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+      margin-top: 28px; background: #000; border: 1px solid var(--border); border-radius: 4px;
       padding: 24px; text-align: left; display: none;
     }
-    .generator-result.active { display: block; animation: fadeIn 0.3s ease-out; }
+    .generator-result.active { display: block; animation: fadeIn 0.2s ease-out; }
     .result-key {
-      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-      font-size: 13px; font-weight: 700; background: #0c0e14; border: 1px solid var(--border);
-      border-radius: 6px; padding: 16px; color: var(--green); word-break: break-all; margin: 12px 0;
-      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      font-family: monospace; font-size: 12.5px; background: #0a0b0d; border: 1px solid var(--border);
+      border-radius: 4px; padding: 16px; color: var(--green); word-break: break-all; margin: 12px 0;
     }
     .btn-copy {
       background: var(--bg3); border: 1px solid var(--border); color: var(--text);
-      font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
-      flex-shrink: 0;
+      font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 3px; cursor: pointer; transition: all 0.2s;
     }
-    .btn-copy:hover { border-color: var(--muted); background: var(--border); }
-    .result-instruction { font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .result-instruction strong { color: var(--text); }
+    .btn-copy:hover { border-color: #6e6e73; }
 
-    /* ── SECURITY GUIDE ── */
-    .security-guide { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .security-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
-    .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
-    .guide-card {
-      background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: left;
-    }
-    .guide-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-    .guide-card h3 span {
-      width: 24px; height: 24px; border-radius: 50%; background: rgba(79,110,247,0.12); color: var(--accent);
-      font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center;
-    }
-    .guide-card p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
-    .guide-card ol { list-style: none; counter-reset: item; }
-    .guide-card ol li { position: relative; padding-left: 24px; font-size: 13.5px; color: var(--muted); margin-bottom: 8px; }
-    .guide-card ol li::before {
-      counter-increment: item; content: counter(item) ".";
-      position: absolute; left: 0; top: 0; color: var(--accent); font-weight: 700;
-    }
-    .guide-card code {
-      display: block; background: #0c0e14; border: 1px solid var(--border); border-radius: 6px;
-      padding: 10px 14px; font-family: monospace; font-size: 12.5px; color: #ff7b72; margin-top: 8px;
-    }
-
-    /* ── REQUIREMENTS ── */
-    .requirements { background: var(--bg); }
-    .req-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
-    .req-table { border-top: 1px solid var(--border); }
-    .req-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 0; border-bottom: 1px solid var(--border);
-      font-size: 14px;
-    }
-    .req-label { color: var(--muted); }
-    .req-value { font-weight: 600; text-align: right; }
-    .chip {
-      display: inline-block; background: rgba(79,110,247,0.12);
-      color: #8fa6fb; border-radius: 6px;
-      padding: 2px 8px; font-size: 12px; font-weight: 600;
-      margin-left: 6px;
-    }
-    .chip.green { background: rgba(46,204,113,0.12); color: #5ddb94; }
+    /* ── SPECIFICATION & POLICY TABLE (Hancom forMac Styled) ── */
+    .spec-section { background: var(--bg); border-top: 1px solid var(--border); padding: 140px 80px; }
+    .spec-inner { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .spec-header h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 24px; }
+    .spec-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 32px; margin-bottom: 32px; }
+    .spec-card h4 { font-size: 14px; font-weight: 700; letter-spacing: 0.05em; color: var(--accent); margin-bottom: 12px; }
+    .spec-card p { font-size: 13.5px; color: #a1a1a6; line-height: 1.7; margin-bottom: 12px; }
+    .spec-card p:last-child { margin-bottom: 0; }
+    .spec-table { border-top: 1px solid var(--border); width: 100%; border-collapse: collapse; }
+    .spec-row { border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; padding: 14px 0; font-size: 13.5px; }
+    .spec-label { color: #a1a1a6; font-weight: 500; }
+    .spec-value { font-weight: 600; text-align: right; color: #f5f5f7; }
+    .chip { display: inline-block; background: rgba(91,127,255,0.1); color: #8fa6fb; border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 600; margin-left: 6px; }
+    .chip.green { background: rgba(48,209,88,0.1); color: #30d158; }
 
     /* ── UPDATES ── */
-    .updates { background: var(--bg2); }
+    .updates { background: var(--bg2); border-top: 1px solid var(--border); padding: 140px 80px; }
     .updates-inner { max-width: 800px; margin: 0 auto; }
-    .updates-header { margin-bottom: 40px; }
-    .update-item {
-      border-left: 2px solid var(--border); padding-left: 24px; margin-bottom: 40px;
-      position: relative;
-    }
-    .update-item::before {
-      content: ''; position: absolute; left: -5px; top: 6px;
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--accent);
-    }
+    .updates-header { margin-bottom: 48px; text-align: center; }
+    .update-item { border-left: 1px solid var(--border); padding-left: 24px; margin-bottom: 40px; position: relative; }
+    .update-item::before { content: ''; position: absolute; left: -4px; top: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
     .update-item.latest::before { background: var(--green); }
-    .update-ver {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
-    }
-    .update-ver strong { font-size: 16px; font-weight: 700; }
-    .update-tag {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-      padding: 2px 8px; border-radius: 4px;
-      background: rgba(46,204,113,0.15); color: var(--green);
-    }
-    .update-date { font-size: 12px; color: var(--muted); }
+    .update-ver { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .update-ver strong { font-size: 15px; font-weight: 700; }
+    .update-tag { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; background: rgba(48,209,88,0.1); color: var(--green); }
+    .update-date { font-size: 12px; color: #6e6e73; }
     .update-notes { list-style: none; }
-    .update-notes li {
-      font-size: 14px; color: var(--muted); padding: 3px 0;
-      display: flex; align-items: baseline; gap: 8px;
-    }
-    .update-notes li::before { content: '·'; color: var(--accent); font-size: 18px; }
+    .update-notes li { font-size: 13.5px; color: #a1a1a6; padding: 3px 0; display: flex; align-items: baseline; gap: 8px; }
+    .update-notes li::before { content: '·'; color: var(--accent); font-weight: bold; }
 
     /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 48px;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 24px;
-      background: var(--bg);
-    }
-    .footer-logo { display: flex; align-items: center; gap: 9px; font-size: 16px; font-weight: 800; letter-spacing: 0.08em; }
-    .footer-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    footer { border-top: 1px solid var(--border); padding: 48px 80px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; background: var(--bg); }
+    .footer-logo { display: flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 800; letter-spacing: 0.10em; }
+    .footer-sub { font-size: 12px; color: #6e6e73; margin-top: 4px; }
     .footer-links { display: flex; gap: 24px; }
-    .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a { font-size: 12px; color: #6e6e73; text-decoration: none; transition: color 0.2s; }
     .footer-links a:hover { color: var(--text); }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -437,19 +333,17 @@
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
-      section { padding: 72px 24px; }
+      section { padding: 80px 24px; }
       .hero { padding: 120px 24px 60px; }
       .hero h1 { font-size: 34px; }
       .hero p { font-size: 16px; }
-      .story-inner { grid-template-columns: 1fr; gap: 40px; }
-      .rating-layout { grid-template-columns: 1fr; }
+      .pillar-row, .pillar-row.reverse { grid-template-columns: 1fr; gap: 40px; }
+      .story-inner { padding: 0; }
       .steps { grid-template-columns: 1fr; gap: 16px; }
-      .step-divider { display: none; }
       .pricing-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .trial-generator { padding: 24px; }
-      .guide-grid { grid-template-columns: 1fr; gap: 16px; }
-      .req-inner { grid-template-columns: 1fr; gap: 40px; }
+      .spec-inner { grid-template-columns: 1fr; gap: 40px; }
       footer { padding: 32px 20px; text-align: center; flex-direction: column; }
     }
   </style>
@@ -459,7 +353,7 @@
 <!-- ── NAV ── -->
 <nav>
   <a href="#" class="nav-logo">
-    <svg width="28" height="28" viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg width="22" height="22" viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs><radialGradient id="ng" cx="36%" cy="28%" r="66%"><stop offset="0%" stop-color="#2e3244"/><stop offset="100%" stop-color="#0d0f18"/></radialGradient><clipPath id="nc"><circle cx="340" cy="340" r="296"/></clipPath></defs>
       <circle cx="340" cy="340" r="296" fill="url(#ng)"/>
       <circle cx="340" cy="340" r="237" fill="#0c0e14"/>
@@ -474,11 +368,11 @@
       <circle cx="340" cy="340" r="65" fill="#0c0e14"/>
       <circle cx="340" cy="340" r="7" fill="#1e2230"/>
     </svg>
-    ROLC
+    &nbsp;ROLC
   </a>
   <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#brand-story">Our Story</a></li>
+    <li><a href="#features">Core Features</a></li>
+    <li><a href="#brand-story">Developer's Story</a></li>
     <li><a href="#how">Workflow</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#trial-generator">Register License</a></li>
@@ -499,7 +393,7 @@
   <p>ROLC (Roll Change) lets you load massive ProRes / MP4 folders instantly to perform ultra-fast <strong>clip rating</strong>, export pristine <strong>PDF shot reports</strong> with one click, and seamlessly <strong>share rating states</strong> with other Mac stations using lightweight project files (.cvp) over a shared NAS.</p>
   <div class="hero-actions">
     <a href="./dist/ROLC-1.0.0-universal.dmg" class="btn-primary" download>
-      ↓ Free Download (7-day free trial on install, no setup)
+      ↓ Free Download (Get 7 Days Free Trial Instantly)
     </a>
     <a href="#pricing" class="btn-secondary">Lifetime License Pricing</a>
   </div>
@@ -518,45 +412,77 @@
   </div>
 </div>
 
-<!-- ── FEATURES ── -->
+<!-- ── CORE 3 PILLARS (Apple-Style alternating layout) ── -->
 <section class="features" id="features">
-  <div class="features-inner">
-    <div class="features-header">
-      <p class="section-label">Features</p>
+  <div class="features-inner" style="max-width: 1140px; margin: 0 auto; text-align: center;">
+    <div class="features-header" style="margin-bottom: 100px;">
+      <p class="section-label">Core Capabilities</p>
       <h2 class="section-title">Three Core Essential Pillars.</h2>
-      <p class="section-sub">We carved away all the unnecessary bloat, polishing only the sharpest tools video professionals actually require.</p>
+      <p class="section-sub" style="margin: 0 auto;">We carved away all the unnecessary bloat, polishing only the sharpest tools video professionals actually require.</p>
     </div>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">⌨️</div>
-        <h3>01. Keyboard-First Clip Rating</h3>
-        <p>No mouse required. Rate clips as OK, Keep, Reject, or Unrated using simple <code>O</code>, <code>K</code>, <code>X</code>, <code>U</code> keystrokes while scrubbing high-resolution thumbnails instantly.</p>
+  </div>
+
+  <!-- Pillar 1: Fast Rating -->
+  <div class="pillar-row">
+    <div class="pillar-visual">
+      <div class="pillar-card">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M6 16h12" /></svg>
+        <div style="font-family: monospace; font-size:12px; color:#5b7fff; margin-bottom: 10px;">KEYBOARD WORKFLOW</div>
+        <div style="display:flex; gap:10px;">
+          <div style="background:rgba(91,127,255,0.15); padding:8px 12px; border-radius:4px; font-weight:900; color:var(--accent);">O (OK)</div>
+          <div style="background:rgba(255,159,10,0.15); padding:8px 12px; border-radius:4px; font-weight:900; color:var(--keep);">K (Keep)</div>
+          <div style="background:rgba(255,69,58,0.15); padding:8px 12px; border-radius:4px; font-weight:900; color:var(--reject);">X (Reject)</div>
+        </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">📄</div>
-        <h3>02. Export PDF Shot Sheets</h3>
-        <p>Generate clean, grid-based or meta-detailed PDF logs with a single tap. Combined with sidebar renaming, the custom reel titles reflect instantly onto report headers.</p>
+    </div>
+    <div class="pillar-text">
+      <div class="pillar-num">01. RATINGS</div>
+      <h3 class="pillar-title">Keyboard-First Clip Rating</h3>
+      <p class="pillar-desc">No NLE loading delays. See every clip as a thumbnail instantly upon SSD/NAS folder connections. Rate clips as OK, Keep, Reject, or Unrated using simple <code>O</code>, <code>K</code>, <code>X</code>, <code>U</code> keystrokes while visually scrubbing.</p>
+      <ul class="pillar-bullet">
+        <li><strong>Mouse-Free Logging:</strong> Complete review via ergonomic shortcuts</li>
+        <li><strong>Zero Scan Barriers:</strong> Traverse complex cameracards with Deep Scan</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Pillar 2: PDF Shot Sheets (Reversed) -->
+  <div class="pillar-row reverse">
+    <div class="pillar-text">
+      <div class="pillar-num">02. DOCUMENTATION</div>
+      <h3 class="pillar-title">Export PDF Shot Sheets</h3>
+      <p class="pillar-desc">Generate clean grid layout or data-centric list PDFs with a single tap. Combined with sidebar renaming, the custom names match automatically with PDF report headers for perfect hand-offs.</p>
+      <ul class="pillar-bullet">
+        <li><strong>Inline Rename:</strong> Avoid duplicate sidebar folder confusion</li>
+        <li><strong>Easy Hand-off:</strong> Direct, elegant PDF format built for directors</li>
+      </ul>
+    </div>
+    <div class="pillar-visual">
+      <div class="pillar-card">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <div style="font-family: monospace; font-size:12px; color:var(--green); margin-bottom: 8px;">EXPORT MATRIX</div>
+        <div style="font-size:13.5px; color:#a1a1a6;">✓ PDF Grid reports (Visuals focus)<br />✓ PDF List reports (Metadata focus)</div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">📦</div>
-        <h3>03. Joint Rating Share &amp; Collaboration</h3>
-        <p>Preserve metadata inside light <code>.cvp</code> files. Share them with editors or colorists over a shared NAS to sync ratings on separate Mac systems with zero cloud hassle.</p>
+    </div>
+  </div>
+
+  <!-- Pillar 3: Share (Collaborate) -->
+  <div class="pillar-row">
+    <div class="pillar-visual">
+      <div class="pillar-card">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff9f0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div style="font-family: monospace; font-size:12px; color:#ff9f0a; margin-bottom: 8px;">NAS / WORKGROUP SYNC</div>
+        <div style="font-size:13.5px; color:#a1a1a6;">• Sync rating states instantly via <strong>.cvp files</strong><br />• Light, server-free offline metadata sharing</div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔍</div>
-        <h3>Recursive Folder Deep Scan</h3>
-        <p>Parse deep, nested subdirectories such as <code>Date/Location/Cam/XDROOT/Clip</code>. Turn on Deep Scan to traverse up to 3+ layers with zero depth boundaries.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🎞</div>
-        <h3>Spacebar Playback &amp; Cache</h3>
-        <p>Select any clip and tap the spacebar to launch instant playback. Highly optimized thumbnail caching allows rapid folder switching without lagging.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔒</div>
-        <h3>Robust Fully Offline Guarantees</h3>
-        <p>Isolated in deep woods, tunnels, or air-tight sound stages? ROLC validates licenses and processes video assets without any external network dependency.</p>
-      </div>
+    </div>
+    <div class="pillar-text">
+      <div class="pillar-num">03. COLLABORATION</div>
+      <h3 class="pillar-title">Joint Rating Share &amp; Collaboration</h3>
+      <p class="pillar-desc">Extract your rated workflows into featherweight <code>.cvp</code> projects. Share them across editing rooms with other editors or colorists over a shared NAS network. Zero remote DB server requirements.</p>
+      <ul class="pillar-bullet">
+        <li><strong>Featherweight Sync:</strong> Open the .cvp file to map ratings to media</li>
+        <li><strong>Folder Syncing:</strong> Auto-reconstruct sidebar folder lists on reload</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -564,67 +490,22 @@
 <!-- ── BRAND STORY ── -->
 <section class="brand-story" id="brand-story">
   <div class="story-inner">
-    <div class="story-profile">
-      <div class="story-avatar">🎬</div>
+    <div class="story-avatar">DEVELOPER NOTES</div>
+    <h2 class="section-title" style="margin-bottom: 32px; font-size: 32px;">"Built out of sheer frustration on set"</h2>
+    <div class="story-quote">
+      "While configuring workflows and offering technical assistance to drama editing teams, I watched assistants struggle daily, verifying and marking over a hundred raw clips inside Premiere Pro. I realized there was a critical need for a lightweight tool where I could instantly playback clips using just a spacebar, visually scrub thumbnails, rate/filter clips quickly, and import cleanly into Premiere."
+    </div>
+    <div style="max-width: 680px; margin: 0 auto; text-align: left;">
+      <p class="story-paragraphs" style="font-size:15px; color:#a1a1a6; line-height: 1.8; margin-bottom: 16px;">
+        That pain drove me to step back and craft a targeted desktop utility. Named after 'Roll Change' — the actual camera card-swapping process on set — <strong>ROLC</strong> packages exactly what you need to cut out the logging delay: fast ratings, elegant PDF sheets, and simple .cvp data sharing.
+      </p>
+      <p class="story-paragraphs" style="font-size:15px; color:#a1a1a6; line-height: 1.8;">
+        We do not weigh down your Mac with unnecessary bloat or trap you in expensive, endless subscription fees. ROLC's sole purpose is saving you logging hours and letting you head home early.
+      </p>
+    </div>
+    <div style="margin-top: 40px;">
       <h4 class="story-author">ROLC Developer</h4>
-      <p class="story-title">Former DIT & Video Editor</p>
-    </div>
-    <div class="story-text">
-      <p class="section-label">Developer's Story</p>
-      <h2 class="section-title">"Built out of sheer frustration on set"</h2>
-      <div class="story-quote">
-        "While configuring workflows and offering technical assistance to drama editing teams, I watched assistants struggle daily, verifying and marking over a hundred raw clips inside Premiere Pro. I realized there was a critical need for a lightweight tool where I could instantly playback clips using just a spacebar, visually scrub thumbnails, rate/filter clips quickly, and import cleanly into Premiere."
-      </div>
-      <div class="story-paragraphs">
-        <p>That pain drove me to step back and craft a targeted desktop utility. Named after the actual camera memory-swapping process on set — <strong>'Roll Change' (ROLC)</strong> — this tool packages exactly what you need to cut out the logging delay: fast ratings, elegant PDF sheets, and simple .cvp data sharing.</p>
-        <p>We do not weigh down your Mac with unnecessary bloat or trap you in expensive, endless subscription fees. ROLC's sole purpose is saving you logging hours and letting you head home early.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── RATING SYSTEM ── -->
-<section>
-  <div class="rating-section">
-    <div class="rating-layout">
-      <div>
-        <p class="section-label">Rating System</p>
-        <h2 class="section-title">Three simple tags.<br />Infinite workflow speed.</h2>
-        <p class="section-sub">A simple tagging system that maps to how video professionals actually think about footage on set.</p>
-        <div class="rating-badges">
-          <div class="rating-badge">
-            <div class="rating-key ok">O</div>
-            <div class="rating-badge-text">
-              <h4>OK — Best Takes (A-Roll)</h4>
-              <p>The ultimate hero takes of the day. The primary choice you want to show to the director and producer immediately.</p>
-            </div>
-          </div>
-          <div class="rating-badge">
-            <div class="rating-key keep">K</div>
-            <div class="rating-badge-text">
-              <h4>Keep — Alternative Takes (B-Roll)</h4>
-              <p>Good takes, but not the best. Great acting/focus that serves as a solid safety net in case the main OK cut needs coverage.</p>
-            </div>
-          </div>
-          <div class="rating-badge">
-            <div class="rating-key reject">X</div>
-            <div class="rating-badge-text">
-              <h4>Reject — Bad Takes (NG/Trash)</h4>
-              <p>Blurry focus, slate mishaps, accidental triggers, or bad audio. Instantly filter these out to focus entirely on useful assets.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="rating-screenshot">
-        <div class="mac-window">
-          <div class="mac-titlebar">
-            <div class="mac-btn close"></div>
-            <div class="mac-btn min"></div>
-            <div class="mac-btn max"></div>
-          </div>
-          <img src="screenshot-filter.png" alt="ROLC filter view — rated clips" />
-        </div>
-      </div>
+      <p class="story-title">Former DIT &amp; Video Editor</p>
     </div>
   </div>
 </section>
@@ -633,7 +514,7 @@
 <section class="how" id="how">
   <div class="how-inner">
     <div class="how-header">
-      <p class="section-label">How It Works</p>
+      <p class="section-label">Workflow</p>
       <h2 class="section-title">From memory card to PDF list in 3 steps.</h2>
       <p class="section-sub">No complex accounts, no server sync. Install, launch, and streamline your logging in 60 seconds.</p>
     </div>
@@ -690,12 +571,12 @@
         <div>
           <div class="pricing-badge">✦ One-time Purchase</div>
           <h3>Personal Lifetime</h3>
-          <p class="pricing-desc">For freelance editors, DITs, and video professionals</p>
+          <p class="pricing-desc">Secure checkout via Naver SmartStore with complete tax/receipt documentation</p>
           <div class="pricing-price"><sup>$</sup>49</div>
           <p class="pricing-sub">Lifetime perpetual license · Pay once</p>
           <ul class="pricing-features">
             <li>Activate up to 2 devices simultaneously (UUID)</li>
-            <li>Official secure Naver SmartStore checkout</li>
+            <li>Standard business receipt provided</li>
             <li>Free minor-version software updates</li>
             <li>High-speed ProRes 422 thumbnail caches</li>
             <li>Unlimited professional PDF report exports</li>
@@ -714,9 +595,9 @@
           <p class="pricing-sub">Lifetime perpetual license</p>
           <ul class="pricing-features">
             <li>Activate up to 5 devices simultaneously</li>
+            <li>Full support for Corporate Tax Invoices</li>
             <li>Flexible device swaps allowed</li>
             <li>Collaborate via multi-folder .cvp files</li>
-            <li>Customized PDF logging formats on demand</li>
             <li>Preferred developer 24/7 priority email help</li>
           </ul>
         </div>
@@ -753,12 +634,53 @@
         <h4 style="color: var(--green); font-size: 15px; font-weight: 700; margin-bottom: 4px;">📬 License Request Email Template Drafted!</h4>
         <p style="font-size: 13px; color: var(--muted);">If your email client didn't launch automatically, please copy this exact block and dispatch it manually to <strong>rolc.official@gmail.com</strong>.</p>
         <div class="result-key" style="flex-direction: column; align-items: stretch;">
-          <textarea id="email-body-text" style="width: 100%; height: 140px; background: #0c0e14; border: none; color: var(--green); font-family: monospace; font-size: 13px; resize: none; outline: none;" readonly></textarea>
+          <textarea id="email-body-text" style="width: 100%; height: 140px; background: #0c0e14; border: none; color: var(--green); font-family: monospace; font-size: 13px; resize: none; outline: none; padding: 12px; border-radius: 4px;" readonly></textarea>
           <button class="btn-copy" style="margin-top: 10px; align-self: flex-end;" onclick="copyEmailTemplate()">Copy Email Template</button>
         </div>
         <p class="result-instruction">
           * ROLC team will cross-reference your purchase history and email your permanent RSA offline license key within 24 hours.
         </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REQUIREMENTS & LICENSE POLICY ── -->
+<section class="spec-section" id="requirements">
+  <div class="spec-inner">
+    <div class="spec-header">
+      <p class="section-label">Policy &amp; Specifications</p>
+      <h2>Specifications &amp; Terms</h2>
+      <p class="section-sub">ROLC guarantees offline processing performance, requiring zero complex network handshakes or online logins.</p>
+      
+      <div class="spec-card" style="margin-top: 40px;">
+        <h4>🔑 Offline Licensing Terms</h4>
+        <p>1. <strong>7-Day Automatic Free Trial:</strong> ROLC grants full capabilities for 7 days instantly on installation. No activation or account needed.</p>
+        <p>2. <strong>Secure Purchase Handshake:</strong> Acquire your lifetime code at Naver SmartStore, then verify your Mac's unique Machine UUID.</p>
+        <p>3. <strong>RSA Key Delivery:</strong> Submit your purchase info and Machine UUID below. ROLC support manually signs and dispatches your perpetual key to your inbox within 24 hours. Hardware swap services are fully supported if you upgrade your workstation.</p>
+      </div>
+    </div>
+    
+    <div class="spec-table">
+      <div class="spec-row">
+        <span class="spec-label">Operating System</span>
+        <span class="spec-value">macOS 11 (Big Sur) or higher recommended</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">Processor Architecture</span>
+        <span class="spec-value">Apple Silicon (M1/M2/M3/M4) <span class="chip">Optimized</span> · Intel Mac</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">Supported Video Formats</span>
+        <span class="spec-value">.mov, .mp4, .m4v, .mxf <span class="chip">Full ProRes 422 Support</span></span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">Installation Footprint</span>
+        <span class="spec-value">Approx. 600MB (Universal Mac DMG package)</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">License Authentication</span>
+        <span class="spec-value">Offline RSA asymmetric key match check <span class="chip green">7 Days Trial Active on Install</span></span>
       </div>
     </div>
   </div>
@@ -791,47 +713,6 @@
           <code>xattr -cr /Applications/ROLC.app</code>
           <li>ROLC is now fully authorized to launch on your machine via standard double-clicks.</li>
         </ol>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── REQUIREMENTS ── -->
-<section class="requirements" id="requirements">
-  <div class="req-inner">
-    <div>
-      <p class="section-label">System Requirements &amp; License Policy</p>
-      <h2 class="section-title">License Policy &amp; Info</h2>
-      <p class="section-sub" style="margin-top:16px;">ROLC guarantees offline processing performance, requiring zero complex network handshakes or online logins.</p>
-      <div style="text-align: left; margin-top: 24px; padding: 20px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;">
-        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--accent);">🔑 Offline Licensing Terms</h4>
-        <p style="font-size: 13.5px; color: var(--muted); line-height: 1.6;">
-          1. <strong>7-Day Automatic Free Trial:</strong> ROLC grants full capabilities for 7 days instantly on installation. No activation or account needed.<br />
-          2. <strong>Secure Purchase Handshake:</strong> Acquire your lifetime code at Naver SmartStore, then verify your Mac's unique Machine UUID.<br />
-          3. <strong>RSA Key Delivery:</strong> Submit your purchase info and Machine UUID below. ROLC support manually signs and dispatches your perpetual key to your inbox within 24 hours. Hardware swap services are fully supported if you upgrade your workstation.
-        </p>
-      </div>
-    </div>
-    <div class="req-table" style="margin-top: 36px;">
-      <div class="req-row">
-        <span class="req-label">Operating System</span>
-        <span class="req-value">macOS 11 (Big Sur) or higher recommended</span>
-      </div>
-      <div class="req-row">
-        <span class="req-label">Processor Architecture</span>
-        <span class="req-value">Apple Silicon (M1/M2/M3) <span class="chip">Optimized</span> · Intel Mac</span>
-      </div>
-      <div class="req-row">
-        <span class="req-label">Supported Video Formats</span>
-        <span class="req-value">.mov, .mp4, .m4v, .mxf <span class="chip">Full ProRes 422 Support</span></span>
-      </div>
-      <div class="req-row">
-        <span class="req-label">Installation Footprint</span>
-        <span class="req-value">Approx. 600MB (Universal Mac DMG package)</span>
-      </div>
-      <div class="req-row">
-        <span class="req-label">License Authentication</span>
-        <span class="req-value">Offline RSA asymmetric key match check <span class="chip green">7 Days Trial Active on Install</span></span>
       </div>
     </div>
   </div>
